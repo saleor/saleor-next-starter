@@ -1,7 +1,7 @@
+import "../public/styles/global.css";
 import type { AppProps } from "next/app";
 import { createClient, Provider } from "urql";
-
-const API_URL = process.env.NEXT_PUBLIC_SALEOR_API_URL ?? "";
+import { API_URL } from "../constants";
 
 const client = createClient({
   url: API_URL,
@@ -10,7 +10,10 @@ const client = createClient({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Provider value={client}>
-      <Component {...pageProps} />
+      <main className="container">
+        <h1>Saleor + Next = 🫶</h1>
+        <Component {...pageProps} />
+      </main>
     </Provider>
   );
 }

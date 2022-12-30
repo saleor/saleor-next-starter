@@ -1,0 +1,49 @@
+body {
+  margin: 0;
+}
+
+:root {
+  /* Credits to: https://www.joshwcomeau.com/shadow-palette/ 👏 */
+  --shadow-color: 0deg 0% 63%;
+  --shadow-elevation-low: 0.3px 0.5px 0.7px hsl(var(--shadow-color) / 0.34),
+    0.4px 0.8px 1px -1.2px hsl(var(--shadow-color) / 0.34),
+    1px 2px 2.5px -2.5px hsl(var(--shadow-color) / 0.34);
+  --shadow-elevation-medium: 0.3px 0.5px 0.7px hsl(var(--shadow-color) / 0.36),
+    0.8px 1.6px 2px -0.8px hsl(var(--shadow-color) / 0.36),
+    2.1px 4.1px 5.2px -1.7px hsl(var(--shadow-color) / 0.36),
+    5px 10px 12.6px -2.5px hsl(var(--shadow-color) / 0.36);
+}
+
+.container {
+  margin: 0 auto;
+  padding-inline: 1rem;
+  max-width: 75rem;
+}
+
+.grid-list {
+  display: grid;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  box-shadow: var(--shadow-elevation-low);
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-elevation-medium);
+}
+
+@media (min-width: 640px) {
+  .grid-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
