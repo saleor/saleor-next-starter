@@ -1,10 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { HomeProps } from "../pages";
+import { DEFAULT_CHANNEl } from "../constants";
+import { useFetchProductsQuery } from "../generated/graphql";
 
-type ProductsProps = HomeProps;
+export const Products = () => {
+  const [{ data }] = useFetchProductsQuery({
+    variables: { channel: DEFAULT_CHANNEl },
+  });
 
-export const Products = ({ data }: ProductsProps) => {
   return (
     <section>
       <h2>Products</h2>

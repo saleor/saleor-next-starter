@@ -14,16 +14,20 @@ specifiers:
   eslint-config-next: 13.1.1
   graphql: ^16.6.0
   next: 13.1.1
+  next-urql: ^4.0.2
   react: 18.2.0
   react-dom: 18.2.0
+  react-is: ^18.2.0
   typescript: 4.9.4
   urql: ^3.0.3
 
 dependencies:
   graphql: 16.6.0
   next: 13.1.1_biqbaboplfbrettd7655fr4n2y
+  next-urql: 4.0.2_react@18.2.0+urql@3.0.3
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-is: 18.2.0
   urql: 3.0.3_onqnqwb3ubg5opvemcqf7c2qhy
 
 devDependencies:
@@ -3886,6 +3890,17 @@ packages:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
 
+  /next-urql/4.0.2_react@18.2.0+urql@3.0.3:
+    resolution: {integrity: sha512-kxVMyk/angixsNjXSib2dabU1fGlidRgk7B9B+WOz+0yIZw9XPcrq1xwwgehfQe2n1O0gboBSQE8reP5LPGk7w==}
+    peerDependencies:
+      react: '>=16.8.0'
+      urql: ^3.0.0
+    dependencies:
+      react: 18.2.0
+      react-ssr-prepass: 1.5.0_react@18.2.0
+      urql: 3.0.3_onqnqwb3ubg5opvemcqf7c2qhy
+    dev: false
+
   /next/13.1.1_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-R5eBAaIa3X7LJeYvv1bMdGnAVF4fVToEjim7MkflceFPuANY3YyvFxXee/A+acrSYwYPvOvf7f6v/BM/48ea5w==}
     engines: {node: '>=14.6.0'}
@@ -4282,6 +4297,18 @@ packages:
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
     dev: true
+
+  /react-is/18.2.0:
+    resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
+    dev: false
+
+  /react-ssr-prepass/1.5.0_react@18.2.0:
+    resolution: {integrity: sha512-yFNHrlVEReVYKsLI5lF05tZoHveA5pGzjFbFJY/3pOqqjGOmMmqx83N4hIjN2n6E1AOa+eQEUxs3CgRnPmT0RQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /react/18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}

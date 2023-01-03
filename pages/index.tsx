@@ -1,33 +1,44 @@
-import { InferGetStaticPropsType } from "next";
+import { GetStaticProps } from "next";
+import { initUrqlClient, withUrqlClient } from "next-urql";
+import { cacheExchange, dedupExchange, fetchExchange, ssrExchange } from "urql";
+import { API_URL } from "../constants";
 import {
   FetchProductsDocument,
   FetchProductsQuery,
   FetchProductsQueryVariables,
 } from "../generated/graphql";
-import { apiClient } from "../src/api/client";
 import { Products } from "../src/Products";
 
-export const getStaticProps = async () => {
-  const { data, error } = await apiClient
-    .query<FetchProductsQuery>(FetchProductsDocument, {
+export const getStaticProps: GetStaticProps = async () => {
+  const ssrCache = ssrExchange({ isClient: false });
+  const client = initUrqlClient(
+    {
+      url: API_URL,
+      exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange],
+    },
+    false
+  );
+
+  // This query is used to populate the cache for the query
+  // used on this page.
+  await client
+    ?.query<FetchProductsQuery>(FetchProductsDocument, {
       channel: "default-channel",
     } as FetchProductsQueryVariables)
     .toPromise();
 
   return {
     props: {
-      ok: !error,
-      data: {
-        products: data?.products,
-      },
+      urqlState: ssrCache.extractData(),
     },
+    revalidate: 600,
   };
 };
 
-export type HomeProps = InferGetStaticPropsType<typeof getStaticProps>;
-
-const Home = (props: HomeProps) => {
-  return <Products {...props} />;
+const HomePage = () => {
+  return <Products />;
 };
 
-export default Home;
+export default withUrqlClient((ssr) => ({
+  url: API_URL,
+}))(HomePage);

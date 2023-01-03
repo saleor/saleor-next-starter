@@ -1,26 +1,26 @@
-import {
-  GetStaticPaths,
-  GetStaticPropsContext,
-  InferGetStaticPropsType,
-} from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
+import { initUrqlClient, withUrqlClient } from "next-urql";
 import Image from "next/image";
-import { DEFAULT_CHANNEl } from "../../constants";
+import { useRouter } from "next/router";
+import { cacheExchange, dedupExchange, fetchExchange, ssrExchange } from "urql";
+import { API_URL, DEFAULT_CHANNEl } from "../../constants";
 import {
   FetchProductDocument,
   FetchProductQuery,
+  FetchProductQueryVariables,
   FetchProductsDocument,
   FetchProductsQuery,
+  FetchProductsQueryVariables,
+  useFetchProductQuery,
 } from "../../generated/graphql";
 import { apiClient } from "../../src/api/client";
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data, error } = await apiClient
+  const { data } = await apiClient
     .query<FetchProductsQuery>(FetchProductsDocument, {
       channel: DEFAULT_CHANNEl,
-    })
+    } as FetchProductsQueryVariables)
     .toPromise();
-
-  console.log(error);
 
   return {
     paths:
@@ -31,33 +31,45 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
-  const id = params?.id;
-  const { data } = await apiClient
-    .query<FetchProductQuery>(FetchProductDocument, { id })
+export const getStaticProps: GetStaticProps = async (context) => {
+  const id = context.params?.id;
+  const ssrCache = ssrExchange({ isClient: false });
+  const client = initUrqlClient(
+    {
+      url: API_URL,
+      exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange],
+    },
+    false
+  );
+
+  // This query is used to populate the cache for the query
+  // used on this page.
+  await client
+    ?.query<FetchProductQuery>(FetchProductDocument, {
+      id,
+    } as FetchProductQueryVariables)
     .toPromise();
 
   return {
     props: {
-      data: {
-        ...data?.product,
-      },
+      urqlState: ssrCache.extractData(),
     },
-    revalidate: 120,
+    revalidate: 600,
   };
 };
 
-type ProductProps = InferGetStaticPropsType<typeof getStaticProps>;
-
-const Product = (props: ProductProps) => {
-  const firstImage = props.data.media?.[0];
+const ProductPage = () => {
+  const { query } = useRouter();
+  const id = (Array.isArray(query.id) ? query.id[0] : query.id) ?? "";
+  const [{ data }] = useFetchProductQuery({ variables: { id } });
+  const firstImage = data?.product?.media?.[0];
   return (
     <div>
-      <h2>{props.data.name}</h2>
+      <h2>{data?.product?.name}</h2>
       {firstImage && (
         <Image
-          alt={firstImage.alt}
-          src={firstImage.url}
+          alt={firstImage?.alt}
+          src={firstImage?.url}
           width={256}
           height={256}
         />
@@ -66,4 +78,6 @@ const Product = (props: ProductProps) => {
   );
 };
 
-export default Product;
+export default withUrqlClient((ssr) => ({
+  url: API_URL,
+}))(ProductPage);
