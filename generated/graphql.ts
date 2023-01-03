@@ -1340,8 +1340,7 @@ export type AttributeDeleted = Event & {
 /** An enumeration. */
 export enum AttributeEntityTypeEnum {
   Page = 'PAGE',
-  Product = 'PRODUCT',
-  ProductVariant = 'PRODUCT_VARIANT'
+  Product = 'PRODUCT'
 }
 
 export type AttributeError = {
@@ -1380,7 +1379,6 @@ export type AttributeFilterInput = {
   isVariantOnly?: InputMaybe<Scalars['Boolean']>;
   metadata?: InputMaybe<Array<MetadataFilter>>;
   search?: InputMaybe<Scalars['String']>;
-  slugs?: InputMaybe<Array<Scalars['String']>>;
   type?: InputMaybe<AttributeTypeEnum>;
   valueRequired?: InputMaybe<Scalars['Boolean']>;
   visibleInStorefront?: InputMaybe<Scalars['Boolean']>;
@@ -1657,18 +1655,12 @@ export type AttributeValueCreateInput = {
   fileUrl?: InputMaybe<Scalars['String']>;
   /** Name of a value displayed in the interface. */
   name: Scalars['String'];
-  /**
-   * Represents the text of the attribute value, plain text without formating.
-   *
-   * DEPRECATED: this field will be removed in Saleor 4.0.The plain text attribute hasn't got predefined value, so can be specified only from instance that supports the given attribute.
-   */
+  /** Represents the text of the attribute value, plain text without formating. */
   plainText?: InputMaybe<Scalars['String']>;
   /**
    * Represents the text of the attribute value, includes formatting.
    *
    * Rich text format. For reference see https://editorjs.io/
-   *
-   * DEPRECATED: this field will be removed in Saleor 4.0.The rich text attribute hasn't got predefined value, so can be specified only from instance that supports the given attribute.
    */
   richText?: InputMaybe<Scalars['JSONString']>;
   /** Represent value of the attribute value (e.g. color values for swatch attributes). */
@@ -1746,58 +1738,22 @@ export type AttributeValueInput = {
   date?: InputMaybe<Scalars['Date']>;
   /** Represents the date/time value of the attribute value. */
   dateTime?: InputMaybe<Scalars['DateTime']>;
-  /**
-   * Attribute value ID.
-   *
-   * Added in Saleor 3.9.
-   */
-  dropdown?: InputMaybe<AttributeValueSelectableTypeInput>;
   /** URL of the file attribute. Every time, a new value is created. */
   file?: InputMaybe<Scalars['String']>;
   /** ID of the selected attribute. */
   id?: InputMaybe<Scalars['ID']>;
-  /**
-   * List of attribute value IDs.
-   *
-   * Added in Saleor 3.9.
-   */
-  multiselect?: InputMaybe<Array<AttributeValueSelectableTypeInput>>;
-  /**
-   * Numeric value of an attribute.
-   *
-   * Added in Saleor 3.9.
-   */
-  numeric?: InputMaybe<Scalars['String']>;
   /** Plain text content. */
   plainText?: InputMaybe<Scalars['String']>;
   /** List of entity IDs that will be used as references. */
   references?: InputMaybe<Array<Scalars['ID']>>;
   /** Text content in JSON format. */
   richText?: InputMaybe<Scalars['JSONString']>;
-  /** The value or slug of an attribute to resolve. If the passed value is non-existent, it will be created. This field will be removed in Saleor 4.0. */
-  values?: InputMaybe<Array<Scalars['String']>>;
-};
-
-/**
- * Represents attribute value. If no ID provided, value will be resolved.
- *
- * Added in Saleor 3.9.
- */
-export type AttributeValueSelectableTypeInput = {
-  /** ID of an attribute value. */
-  id?: InputMaybe<Scalars['ID']>;
   /** The value or slug of an attribute to resolve. If the passed value is non-existent, it will be created. */
-  value?: InputMaybe<Scalars['String']>;
+  values?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type AttributeValueTranslatableContent = Node & {
   __typename?: 'AttributeValueTranslatableContent';
-  /**
-   * Associated attribute that can be translated.
-   *
-   * Added in Saleor 3.9.
-   */
-  attribute?: Maybe<AttributeTranslatableContent>;
   /**
    * Represents a value of an attribute.
    * @deprecated This field will be removed in Saleor 4.0. Get model fields from the root level queries.
@@ -1885,18 +1841,12 @@ export type AttributeValueUpdateInput = {
   fileUrl?: InputMaybe<Scalars['String']>;
   /** Name of a value displayed in the interface. */
   name?: InputMaybe<Scalars['String']>;
-  /**
-   * Represents the text of the attribute value, plain text without formating.
-   *
-   * DEPRECATED: this field will be removed in Saleor 4.0.The plain text attribute hasn't got predefined value, so can be specified only from instance that supports the given attribute.
-   */
+  /** Represents the text of the attribute value, plain text without formating. */
   plainText?: InputMaybe<Scalars['String']>;
   /**
    * Represents the text of the attribute value, includes formatting.
    *
    * Rich text format. For reference see https://editorjs.io/
-   *
-   * DEPRECATED: this field will be removed in Saleor 4.0.The rich text attribute hasn't got predefined value, so can be specified only from instance that supports the given attribute.
    */
   richText?: InputMaybe<Scalars['JSONString']>;
   /** Represent value of the attribute value (e.g. color values for swatch attributes). */
@@ -1967,26 +1917,6 @@ export type BulkStockError = {
   message?: Maybe<Scalars['String']>;
   /** List of attribute values IDs which causes the error. */
   values?: Maybe<Array<Scalars['ID']>>;
-};
-
-/**
- * Synchronous webhook for calculating checkout/order taxes.
- *
- * Added in Saleor 3.7.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type CalculateTaxes = Event & {
-  __typename?: 'CalculateTaxes';
-  /** Time of the event. */
-  issuedAt?: Maybe<Scalars['DateTime']>;
-  /** The user or application that triggered the event. */
-  issuingPrincipal?: Maybe<IssuingPrincipal>;
-  /** The application receiving the webhook. */
-  recipient?: Maybe<App>;
-  taxBase: TaxableObject;
-  /** Saleor version that triggered the event. */
-  version?: Maybe<Scalars['String']>;
 };
 
 export type CardInput = {
@@ -2142,10 +2072,8 @@ export type CategoryProductsArgs = {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
   channel?: InputMaybe<Scalars['String']>;
-  filter?: InputMaybe<ProductFilterInput>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
-  sortBy?: InputMaybe<ProductOrder>;
 };
 
 
@@ -2257,7 +2185,6 @@ export type CategoryFilterInput = {
   ids?: InputMaybe<Array<Scalars['ID']>>;
   metadata?: InputMaybe<Array<MetadataFilter>>;
   search?: InputMaybe<Scalars['String']>;
-  slugs?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type CategoryInput = {
@@ -2271,20 +2198,8 @@ export type CategoryInput = {
    * Rich text format. For reference see https://editorjs.io/
    */
   description?: InputMaybe<Scalars['JSONString']>;
-  /**
-   * Fields required to update the category metadata.
-   *
-   * Added in Saleor 3.8.
-   */
-  metadata?: InputMaybe<Array<MetadataInput>>;
   /** Category name. */
   name?: InputMaybe<Scalars['String']>;
-  /**
-   * Fields required to update the category private metadata.
-   *
-   * Added in Saleor 3.8.
-   */
-  privateMetadata?: InputMaybe<Array<MetadataInput>>;
   /** Search engine optimization fields. */
   seo?: InputMaybe<SeoInput>;
   /** Category slug. */
@@ -2808,14 +2723,6 @@ export type Checkout = Node & ObjectWithMetadata & {
   deliveryMethod?: Maybe<DeliveryMethod>;
   discount?: Maybe<Money>;
   discountName?: Maybe<Scalars['String']>;
-  /**
-   * Determines whether checkout prices should include taxes when displayed in a storefront.
-   *
-   * Added in Saleor 3.9.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  displayGrossPrices: Scalars['Boolean'];
   /** Email of a customer. */
   email?: Maybe<Scalars['String']>;
   /** List of gift cards associated with this checkout. */
@@ -2889,14 +2796,6 @@ export type Checkout = Node & ObjectWithMetadata & {
   stockReservationExpires?: Maybe<Scalars['DateTime']>;
   /** The price of the checkout before shipping, with taxes included. */
   subtotalPrice: TaxedMoney;
-  /**
-   * Returns True if checkout has to be exempt from taxes.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  taxExemption: Scalars['Boolean'];
   /** The checkout's token. */
   token: Scalars['UUID'];
   /** The sum of the the checkout line prices, with all the taxes,shipping costs, and discounts included. */
@@ -3322,12 +3221,6 @@ export type CheckoutLineInput = {
    */
   forceNewLine?: InputMaybe<Scalars['Boolean']>;
   /**
-   * Fields required to update the object's metadata.
-   *
-   * Added in Saleor 3.8.
-   */
-  metadata?: InputMaybe<Array<MetadataInput>>;
-  /**
    * Custom price of the item. Can be set only by apps with `HANDLE_CHECKOUTS` permission. When the line with the same variant will be provided multiple times, the last price will be used.
    *
    * Added in Saleor 3.1.
@@ -3392,27 +3285,6 @@ export type CheckoutLinesUpdate = {
   /** @deprecated This field will be removed in Saleor 4.0. Use `errors` field instead. */
   checkoutErrors: Array<CheckoutError>;
   errors: Array<CheckoutError>;
-};
-
-/**
- * Event sent when checkout metadata is updated.
- *
- * Added in Saleor 3.8.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type CheckoutMetadataUpdated = Event & {
-  __typename?: 'CheckoutMetadataUpdated';
-  /** The checkout the event relates to. */
-  checkout?: Maybe<Checkout>;
-  /** Time of the event. */
-  issuedAt?: Maybe<Scalars['DateTime']>;
-  /** The user or application that triggered the event. */
-  issuingPrincipal?: Maybe<IssuingPrincipal>;
-  /** The application receiving the webhook. */
-  recipient?: Maybe<App>;
-  /** Saleor version that triggered the event. */
-  version?: Maybe<Scalars['String']>;
 };
 
 /** Create a new payment for given checkout. */
@@ -3755,20 +3627,8 @@ export type CollectionCreateInput = {
   description?: InputMaybe<Scalars['JSONString']>;
   /** Informs whether a collection is published. */
   isPublished?: InputMaybe<Scalars['Boolean']>;
-  /**
-   * Fields required to update the collection metadata.
-   *
-   * Added in Saleor 3.8.
-   */
-  metadata?: InputMaybe<Array<MetadataInput>>;
   /** Name of the collection. */
   name?: InputMaybe<Scalars['String']>;
-  /**
-   * Fields required to update the collection private metadata.
-   *
-   * Added in Saleor 3.8.
-   */
-  privateMetadata?: InputMaybe<Array<MetadataInput>>;
   /** List of products to be added to the collection. */
   products?: InputMaybe<Array<Scalars['ID']>>;
   /**
@@ -3896,7 +3756,6 @@ export type CollectionFilterInput = {
   metadata?: InputMaybe<Array<MetadataFilter>>;
   published?: InputMaybe<CollectionPublished>;
   search?: InputMaybe<Scalars['String']>;
-  slugs?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type CollectionInput = {
@@ -3912,20 +3771,8 @@ export type CollectionInput = {
   description?: InputMaybe<Scalars['JSONString']>;
   /** Informs whether a collection is published. */
   isPublished?: InputMaybe<Scalars['Boolean']>;
-  /**
-   * Fields required to update the collection metadata.
-   *
-   * Added in Saleor 3.8.
-   */
-  metadata?: InputMaybe<Array<MetadataInput>>;
   /** Name of the collection. */
   name?: InputMaybe<Scalars['String']>;
-  /**
-   * Fields required to update the collection private metadata.
-   *
-   * Added in Saleor 3.8.
-   */
-  privateMetadata?: InputMaybe<Array<MetadataInput>>;
   /**
    * Publication date. ISO 8601 standard.
    *
@@ -3936,39 +3783,6 @@ export type CollectionInput = {
   seo?: InputMaybe<SeoInput>;
   /** Slug of the collection. */
   slug?: InputMaybe<Scalars['String']>;
-};
-
-/**
- * Event sent when collection metadata is updated.
- *
- * Added in Saleor 3.8.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type CollectionMetadataUpdated = Event & {
-  __typename?: 'CollectionMetadataUpdated';
-  /** The collection the event relates to. */
-  collection?: Maybe<Collection>;
-  /** Time of the event. */
-  issuedAt?: Maybe<Scalars['DateTime']>;
-  /** The user or application that triggered the event. */
-  issuingPrincipal?: Maybe<IssuingPrincipal>;
-  /** The application receiving the webhook. */
-  recipient?: Maybe<App>;
-  /** Saleor version that triggered the event. */
-  version?: Maybe<Scalars['String']>;
-};
-
-
-/**
- * Event sent when collection metadata is updated.
- *
- * Added in Saleor 3.8.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type CollectionMetadataUpdatedCollectionArgs = {
-  channel?: InputMaybe<Scalars['String']>;
 };
 
 export enum CollectionPublished {
@@ -4474,30 +4288,13 @@ export type CountryDisplay = {
   code: Scalars['String'];
   /** Country name. */
   country: Scalars['String'];
-  /**
-   * Country tax.
-   * @deprecated This field will be removed in Saleor 4.0. Use `TaxClassCountryRate` type to manage tax rates per country.
-   */
+  /** Country tax. */
   vat?: Maybe<Vat>;
 };
 
 export type CountryFilterInput = {
   /** Boolean for filtering countries by having shipping zone assigned.If 'true', return countries with shipping zone assigned.If 'false', return countries without any shipping zone assigned.If the argument is not provided (null), return all countries. */
   attachedToShippingZones?: InputMaybe<Scalars['Boolean']>;
-};
-
-export type CountryRateInput = {
-  /** Country in which this rate applies. */
-  countryCode: CountryCode;
-  /** Tax rate value provided as percentage. Example: provide `23` to represent `23%` tax rate. */
-  rate: Scalars['Float'];
-};
-
-export type CountryRateUpdateInput = {
-  /** Country in which this rate applies. */
-  countryCode: CountryCode;
-  /** Tax rate value provided as percentage. Example: provide `23` to represent `23%` tax rate. Provide `null` to remove the particular rate. */
-  rate?: InputMaybe<Scalars['Float']>;
 };
 
 /** Create JWT token. */
@@ -4634,12 +4431,6 @@ export enum CustomerEventsEnum {
 
 export type CustomerFilterInput = {
   dateJoined?: InputMaybe<DateRangeInput>;
-  /**
-   * Filter by ids.
-   *
-   * Added in Saleor 3.8.
-   */
-  ids?: InputMaybe<Array<Scalars['ID']>>;
   metadata?: InputMaybe<Array<MetadataFilter>>;
   numberOfOrders?: InputMaybe<IntRangeInput>;
   placedOrders?: InputMaybe<DateRangeInput>;
@@ -4664,27 +4455,6 @@ export type CustomerInput = {
   lastName?: InputMaybe<Scalars['String']>;
   /** A note about the user. */
   note?: InputMaybe<Scalars['String']>;
-};
-
-/**
- * Event sent when customer user metadata is updated.
- *
- * Added in Saleor 3.8.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type CustomerMetadataUpdated = Event & {
-  __typename?: 'CustomerMetadataUpdated';
-  /** Time of the event. */
-  issuedAt?: Maybe<Scalars['DateTime']>;
-  /** The user or application that triggered the event. */
-  issuingPrincipal?: Maybe<IssuingPrincipal>;
-  /** The application receiving the webhook. */
-  recipient?: Maybe<App>;
-  /** The user the event relates to. */
-  user?: Maybe<User>;
-  /** Saleor version that triggered the event. */
-  version?: Maybe<Scalars['String']>;
 };
 
 /**
@@ -4897,18 +4667,6 @@ export type DigitalContentInput = {
   automaticFulfillment?: InputMaybe<Scalars['Boolean']>;
   /** Determines how many times a download link can be accessed by a customer. */
   maxDownloads?: InputMaybe<Scalars['Int']>;
-  /**
-   * Fields required to update the digital content metadata.
-   *
-   * Added in Saleor 3.8.
-   */
-  metadata?: InputMaybe<Array<MetadataInput>>;
-  /**
-   * Fields required to update the digital content private metadata.
-   *
-   * Added in Saleor 3.8.
-   */
-  privateMetadata?: InputMaybe<Array<MetadataInput>>;
   /** Determines for how many days a download link is active since it was generated. */
   urlValidDays?: InputMaybe<Scalars['Int']>;
   /** Use default digital content settings for this product. */
@@ -4936,18 +4694,6 @@ export type DigitalContentUploadInput = {
   contentFile: Scalars['Upload'];
   /** Determines how many times a download link can be accessed by a customer. */
   maxDownloads?: InputMaybe<Scalars['Int']>;
-  /**
-   * Fields required to update the digital content metadata.
-   *
-   * Added in Saleor 3.8.
-   */
-  metadata?: InputMaybe<Array<MetadataInput>>;
-  /**
-   * Fields required to update the digital content private metadata.
-   *
-   * Added in Saleor 3.8.
-   */
-  privateMetadata?: InputMaybe<Array<MetadataInput>>;
   /** Determines for how many days a download link is active since it was generated. */
   urlValidDays?: InputMaybe<Scalars['Int']>;
   /** Use default digital content settings for this product. */
@@ -5886,29 +5632,6 @@ export type FulfillmentLine = Node & {
 };
 
 /**
- * Event sent when fulfillment metadata is updated.
- *
- * Added in Saleor 3.8.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type FulfillmentMetadataUpdated = Event & {
-  __typename?: 'FulfillmentMetadataUpdated';
-  /** The fulfillment the event relates to. */
-  fulfillment?: Maybe<Fulfillment>;
-  /** Time of the event. */
-  issuedAt?: Maybe<Scalars['DateTime']>;
-  /** The user or application that triggered the event. */
-  issuingPrincipal?: Maybe<IssuingPrincipal>;
-  /** The order the fulfillment belongs to. */
-  order?: Maybe<Order>;
-  /** The application receiving the webhook. */
-  recipient?: Maybe<App>;
-  /** Saleor version that triggered the event. */
-  version?: Maybe<Scalars['String']>;
-};
-
-/**
  * Refund products.
  *
  * Requires one of the following permissions: MANAGE_ORDERS.
@@ -6563,27 +6286,6 @@ export type GiftCardFilterInput = {
 };
 
 /**
- * Event sent when gift card metadata is updated.
- *
- * Added in Saleor 3.8.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type GiftCardMetadataUpdated = Event & {
-  __typename?: 'GiftCardMetadataUpdated';
-  /** The gift card the event relates to. */
-  giftCard?: Maybe<GiftCard>;
-  /** Time of the event. */
-  issuedAt?: Maybe<Scalars['DateTime']>;
-  /** The user or application that triggered the event. */
-  issuingPrincipal?: Maybe<IssuingPrincipal>;
-  /** The application receiving the webhook. */
-  recipient?: Maybe<App>;
-  /** Saleor version that triggered the event. */
-  version?: Maybe<Scalars['String']>;
-};
-
-/**
  * Resend a gift card.
  *
  * Added in Saleor 3.1.
@@ -6660,17 +6362,11 @@ export type GiftCardSettingsUpdateInput = {
 };
 
 export enum GiftCardSortField {
-  /**
-   * Sort gift cards by created at.
-   *
-   * Added in Saleor 3.8.
-   */
-  CreatedAt = 'CREATED_AT',
-  /** Sort gift cards by current balance. */
+  /** Sort orders by current balance. */
   CurrentBalance = 'CURRENT_BALANCE',
-  /** Sort gift cards by product. */
+  /** Sort orders by product. */
   Product = 'PRODUCT',
-  /** Sort gift cards by used by. */
+  /** Sort orders by used by. */
   UsedBy = 'USED_BY'
 }
 
@@ -7954,14 +7650,6 @@ export type Manifest = {
   about?: Maybe<Scalars['String']>;
   appUrl?: Maybe<Scalars['String']>;
   /**
-   * The audience that will be included in all JWT tokens for the app.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  audience?: Maybe<Scalars['String']>;
-  /**
    * URL to iframe with the configuration for the app.
    * @deprecated This field will be removed in Saleor 4.0. Use `appUrl` instead.
    */
@@ -8029,18 +7717,6 @@ export enum MeasurementUnitsEnum {
   Tonne = 'TONNE',
   Yd = 'YD'
 }
-
-export enum MediaChoicesSortField {
-  /** Sort media by ID. */
-  Id = 'ID'
-}
-
-export type MediaSortingInput = {
-  /** Specifies the direction in which to sort products. */
-  direction: OrderDirection;
-  /** Sort media by the selected field. */
-  field: MediaChoicesSortField;
-};
 
 /** Represents a single menu - an object that is used to help navigate through the store. */
 export type Menu = Node & ObjectWithMetadata & {
@@ -8274,7 +7950,6 @@ export type MenuFilterInput = {
   metadata?: InputMaybe<Array<MetadataFilter>>;
   search?: InputMaybe<Scalars['String']>;
   slug?: InputMaybe<Array<Scalars['String']>>;
-  slugs?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type MenuInput = {
@@ -10160,9 +9835,6 @@ export type Mutation = {
    * Fetch tax rates.
    *
    * Requires one of the following permissions: MANAGE_SETTINGS.
-   * @deprecated
-   *
-   * DEPRECATED: this mutation will be removed in Saleor 4.0.
    */
   shopFetchTaxRates?: Maybe<ShopFetchTaxRates>;
   /**
@@ -10219,76 +9891,6 @@ export type Mutation = {
    * Requires one of the following permissions: MANAGE_STAFF.
    */
   staffUpdate?: Maybe<StaffUpdate>;
-  /**
-   * Create a tax class.
-   *
-   * Added in Saleor 3.9.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   *
-   * Requires one of the following permissions: MANAGE_TAXES.
-   */
-  taxClassCreate?: Maybe<TaxClassCreate>;
-  /**
-   * Delete a tax class. After deleting the tax class any products, product types or shipping methods using it are updated to use the default tax class.
-   *
-   * Added in Saleor 3.9.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   *
-   * Requires one of the following permissions: MANAGE_TAXES.
-   */
-  taxClassDelete?: Maybe<TaxClassDelete>;
-  /**
-   * Update a tax class.
-   *
-   * Added in Saleor 3.9.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   *
-   * Requires one of the following permissions: MANAGE_TAXES.
-   */
-  taxClassUpdate?: Maybe<TaxClassUpdate>;
-  /**
-   * Update tax configuration for a channel.
-   *
-   * Added in Saleor 3.9.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   *
-   * Requires one of the following permissions: MANAGE_TAXES.
-   */
-  taxConfigurationUpdate?: Maybe<TaxConfigurationUpdate>;
-  /**
-   * Remove all tax class rates for a specific country.
-   *
-   * Added in Saleor 3.9.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   *
-   * Requires one of the following permissions: MANAGE_TAXES.
-   */
-  taxCountryConfigurationDelete?: Maybe<TaxCountryConfigurationDelete>;
-  /**
-   * Update tax class rates for a specific country.
-   *
-   * Added in Saleor 3.9.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   *
-   * Requires one of the following permissions: MANAGE_TAXES.
-   */
-  taxCountryConfigurationUpdate?: Maybe<TaxCountryConfigurationUpdate>;
-  /**
-   * Exempt checkout or order from charging the taxes. When tax exemption is enabled, taxes won't be charged for the checkout or order. Taxes may still be calculated in cases when product prices are entered with the tax included and the net price needs to be known.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   *
-   * Requires one of the following permissions: MANAGE_TAXES.
-   */
-  taxExemptionManage?: Maybe<TaxExemptionManage>;
   /** Create JWT token. */
   tokenCreate?: Maybe<CreateToken>;
   /** Refresh JWT token. Mutation tries to take refreshToken from the input.If it fails it will try to take refreshToken from the http-only cookie -refreshToken. csrfToken is required when refreshToken is provided as a cookie. */
@@ -10729,7 +10331,6 @@ export type MutationCheckoutBillingAddressUpdateArgs = {
 export type MutationCheckoutCompleteArgs = {
   checkoutId?: InputMaybe<Scalars['ID']>;
   id?: InputMaybe<Scalars['ID']>;
-  metadata?: InputMaybe<Array<MetadataInput>>;
   paymentData?: InputMaybe<Scalars['JSONString']>;
   redirectUrl?: InputMaybe<Scalars['String']>;
   storeSource?: InputMaybe<Scalars['Boolean']>;
@@ -11241,8 +10842,6 @@ export type MutationOrderConfirmArgs = {
 
 export type MutationOrderCreateFromCheckoutArgs = {
   id: Scalars['ID'];
-  metadata?: InputMaybe<Array<MetadataInput>>;
-  privateMetadata?: InputMaybe<Array<MetadataInput>>;
   removeCheckout?: InputMaybe<Scalars['Boolean']>;
 };
 
@@ -11622,15 +11221,13 @@ export type MutationProductVariantBulkCreateArgs = {
 
 
 export type MutationProductVariantBulkDeleteArgs = {
-  ids?: InputMaybe<Array<Scalars['ID']>>;
-  skus?: InputMaybe<Array<Scalars['String']>>;
+  ids: Array<Scalars['ID']>;
 };
 
 
 export type MutationProductVariantChannelListingUpdateArgs = {
-  id?: InputMaybe<Scalars['ID']>;
+  id: Scalars['ID'];
   input: Array<ProductVariantChannelListingAddInput>;
-  sku?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -11640,8 +11237,7 @@ export type MutationProductVariantCreateArgs = {
 
 
 export type MutationProductVariantDeleteArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-  sku?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
 };
 
 
@@ -11676,16 +11272,14 @@ export type MutationProductVariantStocksCreateArgs = {
 
 
 export type MutationProductVariantStocksDeleteArgs = {
-  sku?: InputMaybe<Scalars['String']>;
-  variantId?: InputMaybe<Scalars['ID']>;
+  variantId: Scalars['ID'];
   warehouseIds?: InputMaybe<Array<Scalars['ID']>>;
 };
 
 
 export type MutationProductVariantStocksUpdateArgs = {
-  sku?: InputMaybe<Scalars['String']>;
   stocks: Array<StockInput>;
-  variantId?: InputMaybe<Scalars['ID']>;
+  variantId: Scalars['ID'];
 };
 
 
@@ -11697,9 +11291,8 @@ export type MutationProductVariantTranslateArgs = {
 
 
 export type MutationProductVariantUpdateArgs = {
-  id?: InputMaybe<Scalars['ID']>;
+  id: Scalars['ID'];
   input: ProductVariantInput;
-  sku?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -11896,47 +11489,7 @@ export type MutationStaffUpdateArgs = {
 };
 
 
-export type MutationTaxClassCreateArgs = {
-  input: TaxClassCreateInput;
-};
-
-
-export type MutationTaxClassDeleteArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationTaxClassUpdateArgs = {
-  id: Scalars['ID'];
-  input: TaxClassUpdateInput;
-};
-
-
-export type MutationTaxConfigurationUpdateArgs = {
-  id: Scalars['ID'];
-  input: TaxConfigurationUpdateInput;
-};
-
-
-export type MutationTaxCountryConfigurationDeleteArgs = {
-  countryCode: CountryCode;
-};
-
-
-export type MutationTaxCountryConfigurationUpdateArgs = {
-  countryCode: CountryCode;
-  updateTaxClassRates: Array<TaxClassRateInput>;
-};
-
-
-export type MutationTaxExemptionManageArgs = {
-  id: Scalars['ID'];
-  taxExemption: Scalars['Boolean'];
-};
-
-
 export type MutationTokenCreateArgs = {
-  audience?: InputMaybe<Scalars['String']>;
   email: Scalars['String'];
   password: Scalars['String'];
 };
@@ -12205,7 +11758,7 @@ export type Order = Node & ObjectWithMetadata & {
   created: Scalars['DateTime'];
   customerNote: Scalars['String'];
   /**
-   * The delivery method selected for this order.
+   * The delivery method selected for this checkout.
    *
    * Added in Saleor 3.1.
    *
@@ -12224,13 +11777,6 @@ export type Order = Node & ObjectWithMetadata & {
   discountName?: Maybe<Scalars['String']>;
   /** List of all discounts assigned to the order. */
   discounts: Array<OrderDiscount>;
-  /**
-   * Determines whether checkout prices should include taxes when displayed in a storefront.
-   *
-   * Added in Saleor 3.9.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
   displayGrossPrices: Scalars['Boolean'];
   /** List of errors that occurred during order validation. */
   errors: Array<OrderError>;
@@ -12322,55 +11868,12 @@ export type Order = Node & ObjectWithMetadata & {
   shippingMethods: Array<ShippingMethod>;
   /** Total price of shipping. */
   shippingPrice: TaxedMoney;
-  /**
-   * Denormalized tax class assigned to the shipping method.
-   *
-   * Added in Saleor 3.9.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   *
-   * Requires one of the following permissions: AUTHENTICATED_STAFF_USER.
-   */
-  shippingTaxClass?: Maybe<TaxClass>;
-  /**
-   * Denormalized public metadata of the shipping method's tax class.
-   *
-   * Added in Saleor 3.9.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  shippingTaxClassMetadata: Array<MetadataItem>;
-  /**
-   * Denormalized name of the tax class assigned to the shipping method.
-   *
-   * Added in Saleor 3.9.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  shippingTaxClassName?: Maybe<Scalars['String']>;
-  /**
-   * Denormalized private metadata of the shipping method's tax class. Requires staff permissions to access.
-   *
-   * Added in Saleor 3.9.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  shippingTaxClassPrivateMetadata: Array<MetadataItem>;
-  /** The shipping tax rate value. */
   shippingTaxRate: Scalars['Float'];
   status: OrderStatus;
   /** User-friendly order status. */
   statusDisplay: Scalars['String'];
   /** The sum of line prices not including shipping. */
   subtotal: TaxedMoney;
-  /**
-   * Returns True if order has to be exempt from taxes.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  taxExemption: Scalars['Boolean'];
   /** @deprecated This field will be removed in Saleor 4.0. Use `id` instead. */
   token: Scalars['String'];
   /** Total amount of the order. */
@@ -13195,40 +12698,6 @@ export type OrderLine = Node & ObjectWithMetadata & {
    * Added in Saleor 3.1.
    */
   quantityToFulfill: Scalars['Int'];
-  /**
-   * Denormalized tax class of the product in this order line.
-   *
-   * Added in Saleor 3.9.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   *
-   * Requires one of the following permissions: AUTHENTICATED_STAFF_USER.
-   */
-  taxClass?: Maybe<TaxClass>;
-  /**
-   * Denormalized public metadata of the tax class.
-   *
-   * Added in Saleor 3.9.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  taxClassMetadata: Array<MetadataItem>;
-  /**
-   * Denormalized name of the tax class.
-   *
-   * Added in Saleor 3.9.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  taxClassName?: Maybe<Scalars['String']>;
-  /**
-   * Denormalized private metadata of the tax class. Requires staff permissions to access.
-   *
-   * Added in Saleor 3.9.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  taxClassPrivateMetadata: Array<MetadataItem>;
   taxRate: Scalars['Float'];
   thumbnail?: Maybe<Image>;
   /** Price of the order line. */
@@ -13395,27 +12864,6 @@ export type OrderMarkAsPaid = {
   order?: Maybe<Order>;
   /** @deprecated This field will be removed in Saleor 4.0. Use `errors` field instead. */
   orderErrors: Array<OrderError>;
-};
-
-/**
- * Event sent when order metadata is updated.
- *
- * Added in Saleor 3.8.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type OrderMetadataUpdated = Event & {
-  __typename?: 'OrderMetadataUpdated';
-  /** Time of the event. */
-  issuedAt?: Maybe<Scalars['DateTime']>;
-  /** The user or application that triggered the event. */
-  issuingPrincipal?: Maybe<IssuingPrincipal>;
-  /** The order the event relates to. */
-  order?: Maybe<Order>;
-  /** The application receiving the webhook. */
-  recipient?: Maybe<App>;
-  /** Saleor version that triggered the event. */
-  version?: Maybe<Scalars['String']>;
 };
 
 /** An enumeration. */
@@ -13982,7 +13430,6 @@ export type PageFilterInput = {
   metadata?: InputMaybe<Array<MetadataFilter>>;
   pageTypes?: InputMaybe<Array<Scalars['ID']>>;
   search?: InputMaybe<Scalars['String']>;
-  slugs?: InputMaybe<Array<Scalars['String']>>;
 };
 
 /** The Relay compliant `PageInfo` type, containing data necessary to paginate this connection. */
@@ -14044,17 +13491,7 @@ export type PageReorderAttributeValues = {
 };
 
 export enum PageSortField {
-  /**
-   * Sort pages by creation date.
-   *
-   * DEPRECATED: this field will be removed in Saleor 4.0.
-   */
-  CreatedAt = 'CREATED_AT',
-  /**
-   * Sort pages by creation date.
-   *
-   * DEPRECATED: this field will be removed in Saleor 4.0.
-   */
+  /** Sort pages by creation date. */
   CreationDate = 'CREATION_DATE',
   /**
    * Sort pages by publication date.
@@ -14372,7 +13809,6 @@ export type PageTypeDeleted = Event & {
 
 export type PageTypeFilterInput = {
   search?: InputMaybe<Scalars['String']>;
-  slugs?: InputMaybe<Array<Scalars['String']>>;
 };
 
 /**
@@ -14774,12 +14210,6 @@ export enum PaymentErrorCode {
 
 export type PaymentFilterInput = {
   checkouts?: InputMaybe<Array<Scalars['ID']>>;
-  /**
-   * Filter by ids.
-   *
-   * Added in Saleor 3.8.
-   */
-  ids?: InputMaybe<Array<Scalars['ID']>>;
 };
 
 /** Available payment gateway backend with configuration necessary to setup client. */
@@ -15000,7 +14430,6 @@ export enum PermissionEnum {
   ManageSettings = 'MANAGE_SETTINGS',
   ManageShipping = 'MANAGE_SHIPPING',
   ManageStaff = 'MANAGE_STAFF',
-  ManageTaxes = 'MANAGE_TAXES',
   ManageTranslations = 'MANAGE_TRANSLATIONS',
   ManageUsers = 'MANAGE_USERS'
 }
@@ -15341,12 +14770,6 @@ export type PriceRangeInput = {
 /** Represents an individual item for sale in the storefront. */
 export type Product = Node & ObjectWithMetadata & {
   __typename?: 'Product';
-  /**
-   * Get a single attribute attached to product by attribute slug.
-   *
-   * Added in Saleor 3.9.
-   */
-  attribute?: Maybe<SelectedAttribute>;
   /** List of attributes assigned to this product. */
   attributes: Array<SelectedAttribute>;
   /**
@@ -15365,7 +14788,6 @@ export type Product = Node & ObjectWithMetadata & {
    * Requires one of the following permissions: MANAGE_PRODUCTS.
    */
   channelListings?: Maybe<Array<ProductChannelListing>>;
-  /** @deprecated This field will be removed in Saleor 4.0. Use `Channel.taxConfiguration` field to determine whether tax collection is enabled. */
   chargeTaxes: Scalars['Boolean'];
   /** List of collections for the product. Requires the following permissions to include the unpublished items: MANAGE_ORDERS, MANAGE_DISCOUNTS, MANAGE_PRODUCTS. */
   collections?: Maybe<Array<Collection>>;
@@ -15451,36 +14873,15 @@ export type Product = Node & ObjectWithMetadata & {
   seoDescription?: Maybe<Scalars['String']>;
   seoTitle?: Maybe<Scalars['String']>;
   slug: Scalars['String'];
-  /**
-   * Tax class assigned to this product type. All products of this product type use this tax class, unless it's overridden in the `Product` type.
-   *
-   * Requires one of the following permissions: AUTHENTICATED_STAFF_USER.
-   */
-  taxClass?: Maybe<TaxClass>;
-  /**
-   * A type of tax. Assigned by enabled tax gateway
-   * @deprecated This field will be removed in Saleor 4.0. Use `taxClass` field instead.
-   */
+  /** A type of tax. Assigned by enabled tax gateway */
   taxType?: Maybe<TaxType>;
   thumbnail?: Maybe<Image>;
   /** Returns translated product fields for the given language code. */
   translation?: Maybe<ProductTranslation>;
   updatedAt: Scalars['DateTime'];
-  /**
-   * Get a single variant by SKU or ID.
-   *
-   * Added in Saleor 3.9.
-   */
-  variant?: Maybe<ProductVariant>;
   /** List of variants for the product. Requires the following permissions to include the unpublished items: MANAGE_ORDERS, MANAGE_DISCOUNTS, MANAGE_PRODUCTS. */
   variants?: Maybe<Array<ProductVariant>>;
   weight?: Maybe<Weight>;
-};
-
-
-/** Represents an individual item for sale in the storefront. */
-export type ProductAttributeArgs = {
-  slug: Scalars['String'];
 };
 
 
@@ -15493,12 +14894,6 @@ export type ProductImageByIdArgs = {
 /** Represents an individual item for sale in the storefront. */
 export type ProductIsAvailableArgs = {
   address?: InputMaybe<AddressInput>;
-};
-
-
-/** Represents an individual item for sale in the storefront. */
-export type ProductMediaArgs = {
-  sortBy?: InputMaybe<MediaSortingInput>;
 };
 
 
@@ -15548,13 +14943,6 @@ export type ProductThumbnailArgs = {
 /** Represents an individual item for sale in the storefront. */
 export type ProductTranslationArgs = {
   languageCode: LanguageCodeEnum;
-};
-
-
-/** Represents an individual item for sale in the storefront. */
-export type ProductVariantArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-  sku?: InputMaybe<Scalars['String']>;
 };
 
 /**
@@ -15806,11 +15194,7 @@ export type ProductCreateInput = {
   attributes?: InputMaybe<Array<AttributeValueInput>>;
   /** ID of the product's category. */
   category?: InputMaybe<Scalars['ID']>;
-  /**
-   * Determine if taxes are being charged for the product.
-   *
-   * DEPRECATED: this field will be removed in Saleor 4.0. Use `Channel.taxConfiguration` to configure whether tax collection is enabled.
-   */
+  /** Determine if taxes are being charged for the product. */
   chargeTaxes?: InputMaybe<Scalars['Boolean']>;
   /** List of IDs of collections that the product belongs to. */
   collections?: InputMaybe<Array<Scalars['ID']>>;
@@ -15820,20 +15204,8 @@ export type ProductCreateInput = {
    * Rich text format. For reference see https://editorjs.io/
    */
   description?: InputMaybe<Scalars['JSONString']>;
-  /**
-   * Fields required to update the product metadata.
-   *
-   * Added in Saleor 3.8.
-   */
-  metadata?: InputMaybe<Array<MetadataInput>>;
   /** Product name. */
   name?: InputMaybe<Scalars['String']>;
-  /**
-   * Fields required to update the product private metadata.
-   *
-   * Added in Saleor 3.8.
-   */
-  privateMetadata?: InputMaybe<Array<MetadataInput>>;
   /** ID of the type that product belongs to. */
   productType: Scalars['ID'];
   /** Defines the product rating value. */
@@ -15842,13 +15214,7 @@ export type ProductCreateInput = {
   seo?: InputMaybe<SeoInput>;
   /** Product slug. */
   slug?: InputMaybe<Scalars['String']>;
-  /** ID of a tax class to assign to this product. If not provided, product will use the tax class which is assigned to the product type. */
-  taxClass?: InputMaybe<Scalars['ID']>;
-  /**
-   * Tax rate for enabled tax gateway.
-   *
-   * DEPRECATED: this field will be removed in Saleor 4.0. Use tax classes to control the tax calculation for a product.
-   */
+  /** Tax rate for enabled tax gateway. */
   taxCode?: InputMaybe<Scalars['String']>;
   /** Weight of the Product. */
   weight?: InputMaybe<Scalars['WeightScalar']>;
@@ -15991,12 +15357,6 @@ export enum ProductFieldEnum {
 
 export type ProductFilterInput = {
   attributes?: InputMaybe<Array<AttributeInput>>;
-  /**
-   * Filter by the date of availability for purchase.
-   *
-   * Added in Saleor 3.8.
-   */
-  availableFrom?: InputMaybe<Scalars['DateTime']>;
   categories?: InputMaybe<Array<Scalars['ID']>>;
   /**
    * Specifies the channel by which the data should be filtered.
@@ -16010,32 +15370,13 @@ export type ProductFilterInput = {
   hasCategory?: InputMaybe<Scalars['Boolean']>;
   hasPreorderedVariants?: InputMaybe<Scalars['Boolean']>;
   ids?: InputMaybe<Array<Scalars['ID']>>;
-  /**
-   * Filter by availability for purchase.
-   *
-   * Added in Saleor 3.8.
-   */
-  isAvailable?: InputMaybe<Scalars['Boolean']>;
   isPublished?: InputMaybe<Scalars['Boolean']>;
-  /**
-   * Filter by visibility in product listings.
-   *
-   * Added in Saleor 3.8.
-   */
-  isVisibleInListing?: InputMaybe<Scalars['Boolean']>;
   metadata?: InputMaybe<Array<MetadataFilter>>;
   /** Filter by the lowest variant price after discounts. */
   minimalPrice?: InputMaybe<PriceRangeInput>;
   price?: InputMaybe<PriceRangeInput>;
   productTypes?: InputMaybe<Array<Scalars['ID']>>;
-  /**
-   * Filter by the publication date.
-   *
-   * Added in Saleor 3.8.
-   */
-  publishedFrom?: InputMaybe<Scalars['DateTime']>;
   search?: InputMaybe<Scalars['String']>;
-  slugs?: InputMaybe<Array<Scalars['String']>>;
   /** Filter by variants having specific stock status. */
   stockAvailability?: InputMaybe<StockAvailability>;
   stocks?: InputMaybe<ProductStockFilterInput>;
@@ -16067,11 +15408,7 @@ export type ProductInput = {
   attributes?: InputMaybe<Array<AttributeValueInput>>;
   /** ID of the product's category. */
   category?: InputMaybe<Scalars['ID']>;
-  /**
-   * Determine if taxes are being charged for the product.
-   *
-   * DEPRECATED: this field will be removed in Saleor 4.0. Use `Channel.taxConfiguration` to configure whether tax collection is enabled.
-   */
+  /** Determine if taxes are being charged for the product. */
   chargeTaxes?: InputMaybe<Scalars['Boolean']>;
   /** List of IDs of collections that the product belongs to. */
   collections?: InputMaybe<Array<Scalars['ID']>>;
@@ -16081,33 +15418,15 @@ export type ProductInput = {
    * Rich text format. For reference see https://editorjs.io/
    */
   description?: InputMaybe<Scalars['JSONString']>;
-  /**
-   * Fields required to update the product metadata.
-   *
-   * Added in Saleor 3.8.
-   */
-  metadata?: InputMaybe<Array<MetadataInput>>;
   /** Product name. */
   name?: InputMaybe<Scalars['String']>;
-  /**
-   * Fields required to update the product private metadata.
-   *
-   * Added in Saleor 3.8.
-   */
-  privateMetadata?: InputMaybe<Array<MetadataInput>>;
   /** Defines the product rating value. */
   rating?: InputMaybe<Scalars['Float']>;
   /** Search engine optimization fields. */
   seo?: InputMaybe<SeoInput>;
   /** Product slug. */
   slug?: InputMaybe<Scalars['String']>;
-  /** ID of a tax class to assign to this product. If not provided, product will use the tax class which is assigned to the product type. */
-  taxClass?: InputMaybe<Scalars['ID']>;
-  /**
-   * Tax rate for enabled tax gateway.
-   *
-   * DEPRECATED: this field will be removed in Saleor 4.0. Use tax classes to control the tax calculation for a product.
-   */
+  /** Tax rate for enabled tax gateway. */
   taxCode?: InputMaybe<Scalars['String']>;
   /** Weight of the Product. */
   weight?: InputMaybe<Scalars['WeightScalar']>;
@@ -16223,41 +15542,6 @@ export type ProductMediaUpdateInput = {
   alt?: InputMaybe<Scalars['String']>;
 };
 
-/**
- * Event sent when product metadata is updated.
- *
- * Added in Saleor 3.8.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type ProductMetadataUpdated = Event & {
-  __typename?: 'ProductMetadataUpdated';
-  /** The category of the product. */
-  category?: Maybe<Category>;
-  /** Time of the event. */
-  issuedAt?: Maybe<Scalars['DateTime']>;
-  /** The user or application that triggered the event. */
-  issuingPrincipal?: Maybe<IssuingPrincipal>;
-  /** The product the event relates to. */
-  product?: Maybe<Product>;
-  /** The application receiving the webhook. */
-  recipient?: Maybe<App>;
-  /** Saleor version that triggered the event. */
-  version?: Maybe<Scalars['String']>;
-};
-
-
-/**
- * Event sent when product metadata is updated.
- *
- * Added in Saleor 3.8.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type ProductMetadataUpdatedProductArgs = {
-  channel?: InputMaybe<Scalars['String']>;
-};
-
 export type ProductOrder = {
   /**
    * Sort product by the selected attribute's values.
@@ -16283,12 +15567,6 @@ export enum ProductOrderField {
    * This option requires a channel filter to work as the values can vary between channels.
    */
   Collection = 'COLLECTION',
-  /**
-   * Sort products by creation date.
-   *
-   * Added in Saleor 3.8.
-   */
-  CreatedAt = 'CREATED_AT',
   /** Sort products by update date. */
   Date = 'DATE',
   /** Sort products by update date. */
@@ -16342,14 +15620,6 @@ export type ProductPricingInfo = {
   discount?: Maybe<TaxedMoney>;
   /** The discount amount in the local currency. */
   discountLocalCurrency?: Maybe<TaxedMoney>;
-  /**
-   * Determines whether this product's price displayed in a storefront should include taxes.
-   *
-   * Added in Saleor 3.9.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  displayGrossPrices: Scalars['Boolean'];
   /** Whether it is in sale or not. */
   onSale?: Maybe<Scalars['Boolean']>;
   /** The discounted price range of the product variants. */
@@ -16520,16 +15790,7 @@ export type ProductType = Node & ObjectWithMetadata & {
    */
   products?: Maybe<ProductCountableConnection>;
   slug: Scalars['String'];
-  /**
-   * Tax class assigned to this product type. All products of this product type use this tax class, unless it's overridden in the `Product` type.
-   *
-   * Requires one of the following permissions: AUTHENTICATED_STAFF_USER.
-   */
-  taxClass?: Maybe<TaxClass>;
-  /**
-   * A type of tax. Assigned by enabled tax gateway
-   * @deprecated This field will be removed in Saleor 4.0. Use `taxClass` field instead.
-   */
+  /** A type of tax. Assigned by enabled tax gateway */
   taxType?: Maybe<TaxType>;
   /**
    * Variant attributes of that product type.
@@ -16669,7 +15930,6 @@ export type ProductTypeFilterInput = {
   metadata?: InputMaybe<Array<MetadataFilter>>;
   productType?: InputMaybe<ProductTypeEnum>;
   search?: InputMaybe<Scalars['String']>;
-  slugs?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type ProductTypeInput = {
@@ -16687,13 +15947,7 @@ export type ProductTypeInput = {
   productAttributes?: InputMaybe<Array<Scalars['ID']>>;
   /** Product type slug. */
   slug?: InputMaybe<Scalars['String']>;
-  /** ID of a tax class to assign to this product type. All products of this product type would use this tax class, unless it's overridden in the `Product` type. */
-  taxClass?: InputMaybe<Scalars['ID']>;
-  /**
-   * Tax rate for enabled tax gateway.
-   *
-   * DEPRECATED: this field will be removed in Saleor 4.0.. Use tax classes to control the tax calculation for a product type.
-   */
+  /** Tax rate for enabled tax gateway. */
   taxCode?: InputMaybe<Scalars['String']>;
   /** List of attributes used to distinguish between different variants of a product. */
   variantAttributes?: InputMaybe<Array<Scalars['ID']>>;
@@ -17027,12 +16281,6 @@ export type ProductVariantBulkCreateInput = {
   attributes: Array<BulkAttributeValueInput>;
   /** List of prices assigned to channels. */
   channelListings?: InputMaybe<Array<ProductVariantChannelListingAddInput>>;
-  /**
-   * Fields required to update the product variant metadata.
-   *
-   * Added in Saleor 3.8.
-   */
-  metadata?: InputMaybe<Array<MetadataInput>>;
   /** Variant name. */
   name?: InputMaybe<Scalars['String']>;
   /**
@@ -17043,12 +16291,6 @@ export type ProductVariantBulkCreateInput = {
    * Note: this API is currently in Feature Preview and can be subject to changes at later point.
    */
   preorder?: InputMaybe<PreorderSettingsInput>;
-  /**
-   * Fields required to update the product variant private metadata.
-   *
-   * Added in Saleor 3.8.
-   */
-  privateMetadata?: InputMaybe<Array<MetadataInput>>;
   /**
    * Determines maximum quantity of `ProductVariant`,that can be bought in a single checkout.
    *
@@ -17169,12 +16411,6 @@ export type ProductVariantCreate = {
 export type ProductVariantCreateInput = {
   /** List of attributes specific to this variant. */
   attributes: Array<AttributeValueInput>;
-  /**
-   * Fields required to update the product variant metadata.
-   *
-   * Added in Saleor 3.8.
-   */
-  metadata?: InputMaybe<Array<MetadataInput>>;
   /** Variant name. */
   name?: InputMaybe<Scalars['String']>;
   /**
@@ -17185,12 +16421,6 @@ export type ProductVariantCreateInput = {
    * Note: this API is currently in Feature Preview and can be subject to changes at later point.
    */
   preorder?: InputMaybe<PreorderSettingsInput>;
-  /**
-   * Fields required to update the product variant private metadata.
-   *
-   * Added in Saleor 3.8.
-   */
-  privateMetadata?: InputMaybe<Array<MetadataInput>>;
   /** Product ID of which type is the variant. */
   product: Scalars['ID'];
   /**
@@ -17301,12 +16531,6 @@ export type ProductVariantFilterInput = {
 export type ProductVariantInput = {
   /** List of attributes specific to this variant. */
   attributes?: InputMaybe<Array<AttributeValueInput>>;
-  /**
-   * Fields required to update the product variant metadata.
-   *
-   * Added in Saleor 3.8.
-   */
-  metadata?: InputMaybe<Array<MetadataInput>>;
   /** Variant name. */
   name?: InputMaybe<Scalars['String']>;
   /**
@@ -17317,12 +16541,6 @@ export type ProductVariantInput = {
    * Note: this API is currently in Feature Preview and can be subject to changes at later point.
    */
   preorder?: InputMaybe<PreorderSettingsInput>;
-  /**
-   * Fields required to update the product variant private metadata.
-   *
-   * Added in Saleor 3.8.
-   */
-  privateMetadata?: InputMaybe<Array<MetadataInput>>;
   /**
    * Determines maximum quantity of `ProductVariant`,that can be bought in a single checkout.
    *
@@ -17337,39 +16555,6 @@ export type ProductVariantInput = {
   trackInventory?: InputMaybe<Scalars['Boolean']>;
   /** Weight of the Product Variant. */
   weight?: InputMaybe<Scalars['WeightScalar']>;
-};
-
-/**
- * Event sent when product variant metadata is updated.
- *
- * Added in Saleor 3.8.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type ProductVariantMetadataUpdated = Event & {
-  __typename?: 'ProductVariantMetadataUpdated';
-  /** Time of the event. */
-  issuedAt?: Maybe<Scalars['DateTime']>;
-  /** The user or application that triggered the event. */
-  issuingPrincipal?: Maybe<IssuingPrincipal>;
-  /** The product variant the event relates to. */
-  productVariant?: Maybe<ProductVariant>;
-  /** The application receiving the webhook. */
-  recipient?: Maybe<App>;
-  /** Saleor version that triggered the event. */
-  version?: Maybe<Scalars['String']>;
-};
-
-
-/**
- * Event sent when product variant metadata is updated.
- *
- * Added in Saleor 3.8.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type ProductVariantMetadataUpdatedProductVariantArgs = {
-  channel?: InputMaybe<Scalars['String']>;
 };
 
 /**
@@ -17924,58 +17109,6 @@ export type Query = {
    * Requires one of the following permissions: MANAGE_PRODUCTS.
    */
   stocks?: Maybe<StockCountableConnection>;
-  /**
-   * Look up a tax class.
-   *
-   * Added in Saleor 3.9.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   *
-   * Requires one of the following permissions: AUTHENTICATED_STAFF_USER, AUTHENTICATED_APP.
-   */
-  taxClass?: Maybe<TaxClass>;
-  /**
-   * List of tax classes.
-   *
-   * Added in Saleor 3.9.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   *
-   * Requires one of the following permissions: AUTHENTICATED_STAFF_USER, AUTHENTICATED_APP.
-   */
-  taxClasses?: Maybe<TaxClassCountableConnection>;
-  /**
-   * Look up a tax configuration.
-   *
-   * Added in Saleor 3.9.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   *
-   * Requires one of the following permissions: AUTHENTICATED_STAFF_USER, AUTHENTICATED_APP.
-   */
-  taxConfiguration?: Maybe<TaxConfiguration>;
-  /**
-   * List of tax configurations.
-   *
-   * Added in Saleor 3.9.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   *
-   * Requires one of the following permissions: AUTHENTICATED_STAFF_USER, AUTHENTICATED_APP.
-   */
-  taxConfigurations?: Maybe<TaxConfigurationCountableConnection>;
-  /**
-   * Tax class rates grouped by country.
-   *
-   * Requires one of the following permissions: AUTHENTICATED_STAFF_USER, AUTHENTICATED_APP.
-   */
-  taxCountryConfiguration?: Maybe<TaxCountryConfiguration>;
-  /**
-   *
-   *
-   * Requires one of the following permissions: AUTHENTICATED_STAFF_USER, AUTHENTICATED_APP.
-   */
-  taxCountryConfigurations?: Maybe<Array<TaxCountryConfiguration>>;
   /** List of all tax rates available from tax gateway. */
   taxTypes?: Maybe<Array<TaxType>>;
   /**
@@ -18509,40 +17642,6 @@ export type QueryStocksArgs = {
   filter?: InputMaybe<StockFilterInput>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
-};
-
-
-export type QueryTaxClassArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryTaxClassesArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  filter?: InputMaybe<TaxClassFilterInput>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  sortBy?: InputMaybe<TaxClassSortingInput>;
-};
-
-
-export type QueryTaxConfigurationArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryTaxConfigurationsArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  filter?: InputMaybe<TaxConfigurationFilterInput>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-};
-
-
-export type QueryTaxCountryConfigurationArgs = {
-  countryCode: CountryCode;
 };
 
 
@@ -19580,12 +18679,6 @@ export type ShippingMethodType = Node & ObjectWithMetadata & {
    * Note: this API is currently in Feature Preview and can be subject to changes at later point.
    */
   privateMetafields?: Maybe<Scalars['Metadata']>;
-  /**
-   * Tax class assigned to this shipping method.
-   *
-   * Requires one of the following permissions: MANAGE_TAXES, MANAGE_SHIPPING.
-   */
-  taxClass?: Maybe<TaxClass>;
   /** Returns translated shipping method fields for the given language code. */
   translation?: Maybe<ShippingMethodTranslation>;
   /** Type of the shipping method. */
@@ -19838,8 +18931,6 @@ export type ShippingPriceInput = {
   name?: InputMaybe<Scalars['String']>;
   /** Shipping zone this method belongs to. */
   shippingZone?: InputMaybe<Scalars['ID']>;
-  /** ID of a tax class to assign to this shipping method. If not provided, the default tax class will be used. */
-  taxClass?: InputMaybe<Scalars['ID']>;
   /** Shipping type: price or weight based. */
   type?: InputMaybe<ShippingMethodTypeEnum>;
 };
@@ -20171,39 +19262,6 @@ export type ShippingZoneFilterInput = {
 };
 
 /**
- * Event sent when shipping zone metadata is updated.
- *
- * Added in Saleor 3.8.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type ShippingZoneMetadataUpdated = Event & {
-  __typename?: 'ShippingZoneMetadataUpdated';
-  /** Time of the event. */
-  issuedAt?: Maybe<Scalars['DateTime']>;
-  /** The user or application that triggered the event. */
-  issuingPrincipal?: Maybe<IssuingPrincipal>;
-  /** The application receiving the webhook. */
-  recipient?: Maybe<App>;
-  /** The shipping zone the event relates to. */
-  shippingZone?: Maybe<ShippingZone>;
-  /** Saleor version that triggered the event. */
-  version?: Maybe<Scalars['String']>;
-};
-
-
-/**
- * Event sent when shipping zone metadata is updated.
- *
- * Added in Saleor 3.8.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type ShippingZoneMetadataUpdatedShippingZoneArgs = {
-  channel?: InputMaybe<Scalars['String']>;
-};
-
-/**
  * Updates a new shipping zone.
  *
  * Requires one of the following permissions: MANAGE_SHIPPING.
@@ -20291,10 +19349,7 @@ export type Shop = {
    * Requires one of the following permissions: AUTHENTICATED_STAFF_USER, AUTHENTICATED_APP.
    */
   channelCurrencies: Array<Scalars['String']>;
-  /**
-   * Charge taxes on shipping.
-   * @deprecated This field will be removed in Saleor 4.0. Use `ShippingMethodType.taxClass` to determine whether taxes are calculated for shipping methods; if a tax class is set, the taxes will be calculated, otherwise no tax rate will be applied.
-   */
+  /** Charge taxes on shipping. */
   chargeTaxesOnShipping: Scalars['Boolean'];
   /** Company address. */
   companyAddress?: Maybe<Address>;
@@ -20332,10 +19387,7 @@ export type Shop = {
   defaultWeightUnit?: Maybe<WeightUnitsEnum>;
   /** Shop's description. */
   description?: Maybe<Scalars['String']>;
-  /**
-   * Display prices with tax in store.
-   * @deprecated This field will be removed in Saleor 4.0. Use `Channel.taxConfiguration` to determine whether to display gross or net prices.
-   */
+  /** Display prices with tax in store. */
   displayGrossPrices: Scalars['Boolean'];
   /** Shop's domain data. */
   domain: Domain;
@@ -20353,10 +19405,7 @@ export type Shop = {
   fulfillmentAutoApprove: Scalars['Boolean'];
   /** Header text. */
   headerText?: Maybe<Scalars['String']>;
-  /**
-   * Include taxes in prices.
-   * @deprecated This field will be removed in Saleor 4.0. Use `Channel.taxConfiguration.pricesEnteredWithTax` to determine whether prices are entered with tax.
-   */
+  /** Include taxes in prices. */
   includeTaxesInPrices: Scalars['Boolean'];
   /** List of the shops's supported languages. */
   languages: Array<LanguageDisplay>;
@@ -20515,11 +19564,7 @@ export type ShopFetchTaxRates = {
 export type ShopSettingsInput = {
   /** Enable automatic fulfillment for all digital products. */
   automaticFulfillmentDigitalProducts?: InputMaybe<Scalars['Boolean']>;
-  /**
-   * Charge taxes on shipping.
-   *
-   * DEPRECATED: this field will be removed in Saleor 4.0. To enable taxes for a shipping method, assign a tax class to the shipping method with `shippingPriceCreate` or `shippingPriceUpdate` mutations.
-   */
+  /** Charge taxes on shipping. */
   chargeTaxesOnShipping?: InputMaybe<Scalars['Boolean']>;
   /** URL of a view where customers can set their password. */
   customerSetPasswordUrl?: InputMaybe<Scalars['String']>;
@@ -20535,11 +19580,7 @@ export type ShopSettingsInput = {
   defaultWeightUnit?: InputMaybe<WeightUnitsEnum>;
   /** SEO description. */
   description?: InputMaybe<Scalars['String']>;
-  /**
-   * Display prices with tax in store.
-   *
-   * DEPRECATED: this field will be removed in Saleor 4.0. Use `taxConfigurationUpdate` mutation to configure this setting per channel or country.
-   */
+  /** Display prices with tax in store. */
   displayGrossPrices?: InputMaybe<Scalars['Boolean']>;
   /**
    * Enable ability to approve fulfillments which are unpaid.
@@ -20555,11 +19596,7 @@ export type ShopSettingsInput = {
   fulfillmentAutoApprove?: InputMaybe<Scalars['Boolean']>;
   /** Header text. */
   headerText?: InputMaybe<Scalars['String']>;
-  /**
-   * Include taxes in prices.
-   *
-   * DEPRECATED: this field will be removed in Saleor 4.0. Use `taxConfigurationUpdate` mutation to configure this setting per channel or country.
-   */
+  /** Include taxes in prices. */
   includeTaxesInPrices?: InputMaybe<Scalars['Boolean']>;
   /**
    * Default number of maximum line quantity in single checkout. Minimum possible value is 1, default value is 50.
@@ -20995,629 +20032,6 @@ export type Subscription = {
   event?: Maybe<Event>;
 };
 
-export enum TaxCalculationStrategy {
-  FlatRates = 'FLAT_RATES',
-  TaxApp = 'TAX_APP'
-}
-
-/**
- * Tax class is a named object used to define tax rates per country. Tax class can be assigned to product types, products and shipping methods to define their tax rates.
- *
- * Added in Saleor 3.9.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type TaxClass = Node & ObjectWithMetadata & {
-  __typename?: 'TaxClass';
-  /** Country-specific tax rates for this tax class. */
-  countries: Array<TaxClassCountryRate>;
-  /** The ID of the object. */
-  id: Scalars['ID'];
-  /** List of public metadata items. Can be accessed without permissions. */
-  metadata: Array<MetadataItem>;
-  /**
-   * A single key from public metadata.
-   *
-   * Tip: Use GraphQL aliases to fetch multiple keys.
-   *
-   * Added in Saleor 3.3.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  metafield?: Maybe<Scalars['String']>;
-  /**
-   * Public metadata. Use `keys` to control which fields you want to include. The default is to include everything.
-   *
-   * Added in Saleor 3.3.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  metafields?: Maybe<Scalars['Metadata']>;
-  /** Name of the tax class. */
-  name: Scalars['String'];
-  /** List of private metadata items. Requires staff permissions to access. */
-  privateMetadata: Array<MetadataItem>;
-  /**
-   * A single key from private metadata. Requires staff permissions to access.
-   *
-   * Tip: Use GraphQL aliases to fetch multiple keys.
-   *
-   * Added in Saleor 3.3.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  privateMetafield?: Maybe<Scalars['String']>;
-  /**
-   * Private metadata. Requires staff permissions to access. Use `keys` to control which fields you want to include. The default is to include everything.
-   *
-   * Added in Saleor 3.3.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  privateMetafields?: Maybe<Scalars['Metadata']>;
-};
-
-
-/**
- * Tax class is a named object used to define tax rates per country. Tax class can be assigned to product types, products and shipping methods to define their tax rates.
- *
- * Added in Saleor 3.9.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type TaxClassMetafieldArgs = {
-  key: Scalars['String'];
-};
-
-
-/**
- * Tax class is a named object used to define tax rates per country. Tax class can be assigned to product types, products and shipping methods to define their tax rates.
- *
- * Added in Saleor 3.9.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type TaxClassMetafieldsArgs = {
-  keys?: InputMaybe<Array<Scalars['String']>>;
-};
-
-
-/**
- * Tax class is a named object used to define tax rates per country. Tax class can be assigned to product types, products and shipping methods to define their tax rates.
- *
- * Added in Saleor 3.9.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type TaxClassPrivateMetafieldArgs = {
-  key: Scalars['String'];
-};
-
-
-/**
- * Tax class is a named object used to define tax rates per country. Tax class can be assigned to product types, products and shipping methods to define their tax rates.
- *
- * Added in Saleor 3.9.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type TaxClassPrivateMetafieldsArgs = {
-  keys?: InputMaybe<Array<Scalars['String']>>;
-};
-
-export type TaxClassCountableConnection = {
-  __typename?: 'TaxClassCountableConnection';
-  edges: Array<TaxClassCountableEdge>;
-  /** Pagination data for this connection. */
-  pageInfo: PageInfo;
-  /** A total count of items in the collection. */
-  totalCount?: Maybe<Scalars['Int']>;
-};
-
-export type TaxClassCountableEdge = {
-  __typename?: 'TaxClassCountableEdge';
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
-  /** The item at the end of the edge. */
-  node: TaxClass;
-};
-
-/**
- * Tax rate for a country. When tax class is null, it represents the default tax rate for that country; otherwise it's a country tax rate specific to the given tax class.
- *
- * Added in Saleor 3.9.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type TaxClassCountryRate = {
-  __typename?: 'TaxClassCountryRate';
-  /** Country in which this tax rate applies. */
-  country: CountryDisplay;
-  /** Tax rate value. */
-  rate: Scalars['Float'];
-  /** Related tax class. */
-  taxClass?: Maybe<TaxClass>;
-};
-
-/**
- * Create a tax class.
- *
- * Added in Saleor 3.9.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- *
- * Requires one of the following permissions: MANAGE_TAXES.
- */
-export type TaxClassCreate = {
-  __typename?: 'TaxClassCreate';
-  errors: Array<TaxClassCreateError>;
-  taxClass?: Maybe<TaxClass>;
-};
-
-export type TaxClassCreateError = {
-  __typename?: 'TaxClassCreateError';
-  /** The error code. */
-  code: TaxClassCreateErrorCode;
-  /** List of country codes for which the configuration is invalid. */
-  countryCodes: Array<Scalars['String']>;
-  /** Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field. */
-  field?: Maybe<Scalars['String']>;
-  /** The error message. */
-  message?: Maybe<Scalars['String']>;
-};
-
-/** An enumeration. */
-export enum TaxClassCreateErrorCode {
-  GraphqlError = 'GRAPHQL_ERROR',
-  Invalid = 'INVALID',
-  NotFound = 'NOT_FOUND'
-}
-
-export type TaxClassCreateInput = {
-  /** List of country-specific tax rates to create for this tax class. */
-  createCountryRates?: InputMaybe<Array<CountryRateInput>>;
-  /** Name of the tax class. */
-  name: Scalars['String'];
-};
-
-/**
- * Delete a tax class. After deleting the tax class any products, product types or shipping methods using it are updated to use the default tax class.
- *
- * Added in Saleor 3.9.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- *
- * Requires one of the following permissions: MANAGE_TAXES.
- */
-export type TaxClassDelete = {
-  __typename?: 'TaxClassDelete';
-  errors: Array<TaxClassDeleteError>;
-  taxClass?: Maybe<TaxClass>;
-};
-
-export type TaxClassDeleteError = {
-  __typename?: 'TaxClassDeleteError';
-  /** The error code. */
-  code: TaxClassDeleteErrorCode;
-  /** Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field. */
-  field?: Maybe<Scalars['String']>;
-  /** The error message. */
-  message?: Maybe<Scalars['String']>;
-};
-
-/** An enumeration. */
-export enum TaxClassDeleteErrorCode {
-  GraphqlError = 'GRAPHQL_ERROR',
-  Invalid = 'INVALID',
-  NotFound = 'NOT_FOUND'
-}
-
-export type TaxClassFilterInput = {
-  countries?: InputMaybe<Array<CountryCode>>;
-  ids?: InputMaybe<Array<Scalars['ID']>>;
-  metadata?: InputMaybe<Array<MetadataFilter>>;
-};
-
-export type TaxClassRateInput = {
-  /** Tax rate value. */
-  rate?: InputMaybe<Scalars['Float']>;
-  /** ID of a tax class for which to update the tax rate */
-  taxClassId?: InputMaybe<Scalars['ID']>;
-};
-
-export enum TaxClassSortField {
-  /** Sort tax classes by name. */
-  Name = 'NAME'
-}
-
-export type TaxClassSortingInput = {
-  /** Specifies the direction in which to sort products. */
-  direction: OrderDirection;
-  /** Sort tax classes by the selected field. */
-  field: TaxClassSortField;
-};
-
-/**
- * Update a tax class.
- *
- * Added in Saleor 3.9.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- *
- * Requires one of the following permissions: MANAGE_TAXES.
- */
-export type TaxClassUpdate = {
-  __typename?: 'TaxClassUpdate';
-  errors: Array<TaxClassUpdateError>;
-  taxClass?: Maybe<TaxClass>;
-};
-
-export type TaxClassUpdateError = {
-  __typename?: 'TaxClassUpdateError';
-  /** The error code. */
-  code: TaxClassUpdateErrorCode;
-  /** List of country codes for which the configuration is invalid. */
-  countryCodes: Array<Scalars['String']>;
-  /** Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field. */
-  field?: Maybe<Scalars['String']>;
-  /** The error message. */
-  message?: Maybe<Scalars['String']>;
-};
-
-/** An enumeration. */
-export enum TaxClassUpdateErrorCode {
-  DuplicatedInputItem = 'DUPLICATED_INPUT_ITEM',
-  GraphqlError = 'GRAPHQL_ERROR',
-  Invalid = 'INVALID',
-  NotFound = 'NOT_FOUND'
-}
-
-export type TaxClassUpdateInput = {
-  /** Name of the tax class. */
-  name?: InputMaybe<Scalars['String']>;
-  /** List of country codes for which to remove the tax class rates. Note: It removes all rates for given country code. */
-  removeCountryRates?: InputMaybe<Array<CountryCode>>;
-  /** List of country-specific tax rates to create or update for this tax class. */
-  updateCountryRates?: InputMaybe<Array<CountryRateUpdateInput>>;
-};
-
-/**
- * Channel-specific tax configuration.
- *
- * Added in Saleor 3.9.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type TaxConfiguration = Node & ObjectWithMetadata & {
-  __typename?: 'TaxConfiguration';
-  /** A channel to which the tax configuration applies to. */
-  channel: Channel;
-  /** Determines whether taxes are charged in the given channel. */
-  chargeTaxes: Scalars['Boolean'];
-  /** List of country-specific exceptions in tax configuration. */
-  countries: Array<TaxConfigurationPerCountry>;
-  /** Determines whether prices displayed in a storefront should include taxes. */
-  displayGrossPrices: Scalars['Boolean'];
-  /** The ID of the object. */
-  id: Scalars['ID'];
-  /** List of public metadata items. Can be accessed without permissions. */
-  metadata: Array<MetadataItem>;
-  /**
-   * A single key from public metadata.
-   *
-   * Tip: Use GraphQL aliases to fetch multiple keys.
-   *
-   * Added in Saleor 3.3.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  metafield?: Maybe<Scalars['String']>;
-  /**
-   * Public metadata. Use `keys` to control which fields you want to include. The default is to include everything.
-   *
-   * Added in Saleor 3.3.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  metafields?: Maybe<Scalars['Metadata']>;
-  /** Determines whether prices are entered with the tax included. */
-  pricesEnteredWithTax: Scalars['Boolean'];
-  /** List of private metadata items. Requires staff permissions to access. */
-  privateMetadata: Array<MetadataItem>;
-  /**
-   * A single key from private metadata. Requires staff permissions to access.
-   *
-   * Tip: Use GraphQL aliases to fetch multiple keys.
-   *
-   * Added in Saleor 3.3.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  privateMetafield?: Maybe<Scalars['String']>;
-  /**
-   * Private metadata. Requires staff permissions to access. Use `keys` to control which fields you want to include. The default is to include everything.
-   *
-   * Added in Saleor 3.3.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  privateMetafields?: Maybe<Scalars['Metadata']>;
-  /** The default strategy to use for tax calculation in the given channel. Taxes can be calculated either using user-defined flat rates or with a tax app. Empty value means that no method is selected and taxes are not calculated. */
-  taxCalculationStrategy?: Maybe<TaxCalculationStrategy>;
-};
-
-
-/**
- * Channel-specific tax configuration.
- *
- * Added in Saleor 3.9.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type TaxConfigurationMetafieldArgs = {
-  key: Scalars['String'];
-};
-
-
-/**
- * Channel-specific tax configuration.
- *
- * Added in Saleor 3.9.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type TaxConfigurationMetafieldsArgs = {
-  keys?: InputMaybe<Array<Scalars['String']>>;
-};
-
-
-/**
- * Channel-specific tax configuration.
- *
- * Added in Saleor 3.9.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type TaxConfigurationPrivateMetafieldArgs = {
-  key: Scalars['String'];
-};
-
-
-/**
- * Channel-specific tax configuration.
- *
- * Added in Saleor 3.9.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type TaxConfigurationPrivateMetafieldsArgs = {
-  keys?: InputMaybe<Array<Scalars['String']>>;
-};
-
-export type TaxConfigurationCountableConnection = {
-  __typename?: 'TaxConfigurationCountableConnection';
-  edges: Array<TaxConfigurationCountableEdge>;
-  /** Pagination data for this connection. */
-  pageInfo: PageInfo;
-  /** A total count of items in the collection. */
-  totalCount?: Maybe<Scalars['Int']>;
-};
-
-export type TaxConfigurationCountableEdge = {
-  __typename?: 'TaxConfigurationCountableEdge';
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
-  /** The item at the end of the edge. */
-  node: TaxConfiguration;
-};
-
-export type TaxConfigurationFilterInput = {
-  ids?: InputMaybe<Array<Scalars['ID']>>;
-  metadata?: InputMaybe<Array<MetadataFilter>>;
-};
-
-/**
- * Country-specific exceptions of a channel's tax configuration.
- *
- * Added in Saleor 3.9.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type TaxConfigurationPerCountry = {
-  __typename?: 'TaxConfigurationPerCountry';
-  /** Determines whether taxes are charged in this country. */
-  chargeTaxes: Scalars['Boolean'];
-  /** Country in which this configuration applies. */
-  country: CountryDisplay;
-  /** Determines whether prices displayed in a storefront should include taxes for this country. */
-  displayGrossPrices: Scalars['Boolean'];
-  /** A country-specific strategy to use for tax calculation. Taxes can be calculated either using user-defined flat rates or with a tax app. If not provided, use the value from the channel's tax configuration. */
-  taxCalculationStrategy?: Maybe<TaxCalculationStrategy>;
-};
-
-export type TaxConfigurationPerCountryInput = {
-  /** Determines whether taxes are charged in this country. */
-  chargeTaxes: Scalars['Boolean'];
-  /** Country in which this configuration applies. */
-  countryCode: CountryCode;
-  /** Determines whether prices displayed in a storefront should include taxes for this country. */
-  displayGrossPrices: Scalars['Boolean'];
-  /** A country-specific strategy to use for tax calculation. Taxes can be calculated either using user-defined flat rates or with a tax app. If not provided, use the value from the channel's tax configuration. */
-  taxCalculationStrategy?: InputMaybe<TaxCalculationStrategy>;
-};
-
-/**
- * Update tax configuration for a channel.
- *
- * Added in Saleor 3.9.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- *
- * Requires one of the following permissions: MANAGE_TAXES.
- */
-export type TaxConfigurationUpdate = {
-  __typename?: 'TaxConfigurationUpdate';
-  errors: Array<TaxConfigurationUpdateError>;
-  taxConfiguration?: Maybe<TaxConfiguration>;
-};
-
-export type TaxConfigurationUpdateError = {
-  __typename?: 'TaxConfigurationUpdateError';
-  /** The error code. */
-  code: TaxConfigurationUpdateErrorCode;
-  /** List of country codes for which the configuration is invalid. */
-  countryCodes: Array<Scalars['String']>;
-  /** Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field. */
-  field?: Maybe<Scalars['String']>;
-  /** The error message. */
-  message?: Maybe<Scalars['String']>;
-};
-
-/** An enumeration. */
-export enum TaxConfigurationUpdateErrorCode {
-  DuplicatedInputItem = 'DUPLICATED_INPUT_ITEM',
-  GraphqlError = 'GRAPHQL_ERROR',
-  Invalid = 'INVALID',
-  NotFound = 'NOT_FOUND'
-}
-
-export type TaxConfigurationUpdateInput = {
-  /** Determines whether taxes are charged in the given channel. */
-  chargeTaxes?: InputMaybe<Scalars['Boolean']>;
-  /** Determines whether prices displayed in a storefront should include taxes. */
-  displayGrossPrices?: InputMaybe<Scalars['Boolean']>;
-  /** Determines whether prices are entered with the tax included. */
-  pricesEnteredWithTax?: InputMaybe<Scalars['Boolean']>;
-  /** List of country codes for which to remove the tax configuration. */
-  removeCountriesConfiguration?: InputMaybe<Array<CountryCode>>;
-  /** The default strategy to use for tax calculation in the given channel. Taxes can be calculated either using user-defined flat rates or with a tax app. Empty value means that no method is selected and taxes are not calculated. */
-  taxCalculationStrategy?: InputMaybe<TaxCalculationStrategy>;
-  /** List of tax country configurations to create or update (identified by a country code). */
-  updateCountriesConfiguration?: InputMaybe<Array<TaxConfigurationPerCountryInput>>;
-};
-
-/**
- * Tax class rates grouped by country.
- *
- * Added in Saleor 3.9.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type TaxCountryConfiguration = {
-  __typename?: 'TaxCountryConfiguration';
-  /** A country for which tax class rates are grouped. */
-  country: CountryDisplay;
-  /** List of tax class rates. */
-  taxClassCountryRates: Array<TaxClassCountryRate>;
-};
-
-/**
- * Remove all tax class rates for a specific country.
- *
- * Added in Saleor 3.9.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- *
- * Requires one of the following permissions: MANAGE_TAXES.
- */
-export type TaxCountryConfigurationDelete = {
-  __typename?: 'TaxCountryConfigurationDelete';
-  errors: Array<TaxCountryConfigurationDeleteError>;
-  /** Updated tax class rates grouped by a country. */
-  taxCountryConfiguration?: Maybe<TaxCountryConfiguration>;
-};
-
-export type TaxCountryConfigurationDeleteError = {
-  __typename?: 'TaxCountryConfigurationDeleteError';
-  /** The error code. */
-  code: TaxCountryConfigurationDeleteErrorCode;
-  /** Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field. */
-  field?: Maybe<Scalars['String']>;
-  /** The error message. */
-  message?: Maybe<Scalars['String']>;
-};
-
-/** An enumeration. */
-export enum TaxCountryConfigurationDeleteErrorCode {
-  GraphqlError = 'GRAPHQL_ERROR',
-  Invalid = 'INVALID',
-  NotFound = 'NOT_FOUND'
-}
-
-/**
- * Update tax class rates for a specific country.
- *
- * Added in Saleor 3.9.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- *
- * Requires one of the following permissions: MANAGE_TAXES.
- */
-export type TaxCountryConfigurationUpdate = {
-  __typename?: 'TaxCountryConfigurationUpdate';
-  errors: Array<TaxCountryConfigurationUpdateError>;
-  /** Updated tax class rates grouped by a country. */
-  taxCountryConfiguration?: Maybe<TaxCountryConfiguration>;
-};
-
-export type TaxCountryConfigurationUpdateError = {
-  __typename?: 'TaxCountryConfigurationUpdateError';
-  /** The error code. */
-  code: TaxCountryConfigurationUpdateErrorCode;
-  /** Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field. */
-  field?: Maybe<Scalars['String']>;
-  /** The error message. */
-  message?: Maybe<Scalars['String']>;
-  /** List of tax class IDs for which the update failed. */
-  taxClassIds: Array<Scalars['String']>;
-};
-
-/** An enumeration. */
-export enum TaxCountryConfigurationUpdateErrorCode {
-  CannotCreateNegativeRate = 'CANNOT_CREATE_NEGATIVE_RATE',
-  GraphqlError = 'GRAPHQL_ERROR',
-  Invalid = 'INVALID',
-  NotFound = 'NOT_FOUND',
-  OnlyOneDefaultCountryRateAllowed = 'ONLY_ONE_DEFAULT_COUNTRY_RATE_ALLOWED'
-}
-
-/**
- * Exempt checkout or order from charging the taxes. When tax exemption is enabled, taxes won't be charged for the checkout or order. Taxes may still be calculated in cases when product prices are entered with the tax included and the net price needs to be known.
- *
- * Added in Saleor 3.8.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- *
- * Requires one of the following permissions: MANAGE_TAXES.
- */
-export type TaxExemptionManage = {
-  __typename?: 'TaxExemptionManage';
-  errors: Array<TaxExemptionManageError>;
-  taxableObject?: Maybe<TaxSourceObject>;
-};
-
-export type TaxExemptionManageError = {
-  __typename?: 'TaxExemptionManageError';
-  /** The error code. */
-  code: TaxExemptionManageErrorCode;
-  /** Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field. */
-  field?: Maybe<Scalars['String']>;
-  /** The error message. */
-  message?: Maybe<Scalars['String']>;
-};
-
-/** An enumeration. */
-export enum TaxExemptionManageErrorCode {
-  GraphqlError = 'GRAPHQL_ERROR',
-  Invalid = 'INVALID',
-  NotEditableOrder = 'NOT_EDITABLE_ORDER',
-  NotFound = 'NOT_FOUND'
-}
-
-export type TaxSourceLine = CheckoutLine | OrderLine;
-
-export type TaxSourceObject = Checkout | Order;
-
 /** Representation of tax types fetched from tax gateway. */
 export type TaxType = {
   __typename?: 'TaxType';
@@ -21625,55 +20039,6 @@ export type TaxType = {
   description?: Maybe<Scalars['String']>;
   /** External tax code used to identify given tax group. */
   taxCode?: Maybe<Scalars['String']>;
-};
-
-/** Taxable object. */
-export type TaxableObject = {
-  __typename?: 'TaxableObject';
-  /** The address data. */
-  address?: Maybe<Address>;
-  channel: Channel;
-  /** The currency of the object. */
-  currency: Scalars['String'];
-  /** List of discounts. */
-  discounts: Array<TaxableObjectDiscount>;
-  /** List of lines assigned to the object. */
-  lines: Array<TaxableObjectLine>;
-  /** Determines if prices contain entered tax.. */
-  pricesEnteredWithTax: Scalars['Boolean'];
-  /** The price of shipping method. */
-  shippingPrice: Money;
-  /** The source object related to this tax object. */
-  sourceObject: TaxSourceObject;
-};
-
-/** Taxable object discount. */
-export type TaxableObjectDiscount = {
-  __typename?: 'TaxableObjectDiscount';
-  /** The amount of the discount. */
-  amount: Money;
-  /** The name of the discount. */
-  name?: Maybe<Scalars['String']>;
-};
-
-export type TaxableObjectLine = {
-  __typename?: 'TaxableObjectLine';
-  /** Determines if taxes are being charged for the product. */
-  chargeTaxes: Scalars['Boolean'];
-  /** The product name. */
-  productName: Scalars['String'];
-  /** The product sku. */
-  productSku?: Maybe<Scalars['String']>;
-  /** Number of items. */
-  quantity: Scalars['Int'];
-  /** The source line related to this tax line. */
-  sourceLine: TaxSourceLine;
-  /** Price of the order line. */
-  totalPrice: Money;
-  /** Price of the single item in the order line. */
-  unitPrice: Money;
-  /** The variant name. */
-  variantName: Scalars['String'];
 };
 
 /** Represents a monetary value with taxes. In cases where taxes were not applied, net and gross values will be equal. */
@@ -22004,31 +20369,6 @@ export type TransactionItemPrivateMetafieldsArgs = {
   keys?: InputMaybe<Array<Scalars['String']>>;
 };
 
-/**
- * Event sent when transaction item metadata is updated.
- *
- * Added in Saleor 3.8.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type TransactionItemMetadataUpdated = Event & {
-  __typename?: 'TransactionItemMetadataUpdated';
-  /** Time of the event. */
-  issuedAt?: Maybe<Scalars['DateTime']>;
-  /** The user or application that triggered the event. */
-  issuingPrincipal?: Maybe<IssuingPrincipal>;
-  /** The application receiving the webhook. */
-  recipient?: Maybe<App>;
-  /**
-   * Look up a transaction.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  transaction?: Maybe<TransactionItem>;
-  /** Saleor version that triggered the event. */
-  version?: Maybe<Scalars['String']>;
-};
-
 /** An enumeration. */
 export enum TransactionKind {
   ActionToConfirm = 'ACTION_TO_CONFIRM',
@@ -22303,12 +20643,6 @@ export type User = Node & ObjectWithMetadata & {
    * @deprecated This field will be removed in Saleor 4.0. Use `checkoutIds` instead.
    */
   checkoutTokens?: Maybe<Array<Scalars['UUID']>>;
-  /**
-   * Returns checkouts assigned to this user.
-   *
-   * Added in Saleor 3.8.
-   */
-  checkouts?: Maybe<CheckoutCountableConnection>;
   dateJoined: Scalars['DateTime'];
   defaultBillingAddress?: Maybe<Address>;
   defaultShippingAddress?: Maybe<Address>;
@@ -22405,16 +20739,6 @@ export type UserCheckoutIdsArgs = {
 /** Represents user data. */
 export type UserCheckoutTokensArgs = {
   channel?: InputMaybe<Scalars['String']>;
-};
-
-
-/** Represents user data. */
-export type UserCheckoutsArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  channel?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -23074,39 +21398,6 @@ export type VoucherInput = {
 };
 
 /**
- * Event sent when voucher metadata is updated.
- *
- * Added in Saleor 3.8.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type VoucherMetadataUpdated = Event & {
-  __typename?: 'VoucherMetadataUpdated';
-  /** Time of the event. */
-  issuedAt?: Maybe<Scalars['DateTime']>;
-  /** The user or application that triggered the event. */
-  issuingPrincipal?: Maybe<IssuingPrincipal>;
-  /** The application receiving the webhook. */
-  recipient?: Maybe<App>;
-  /** Saleor version that triggered the event. */
-  version?: Maybe<Scalars['String']>;
-  /** The voucher the event relates to. */
-  voucher?: Maybe<Voucher>;
-};
-
-
-/**
- * Event sent when voucher metadata is updated.
- *
- * Added in Saleor 3.8.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type VoucherMetadataUpdatedVoucherArgs = {
-  channel?: InputMaybe<Scalars['String']>;
-};
-
-/**
  * Removes products, categories, collections from a voucher.
  *
  * Requires one of the following permissions: MANAGE_DISCOUNTS.
@@ -23486,28 +21777,6 @@ export type WarehouseFilterInput = {
   ids?: InputMaybe<Array<Scalars['ID']>>;
   isPrivate?: InputMaybe<Scalars['Boolean']>;
   search?: InputMaybe<Scalars['String']>;
-  slugs?: InputMaybe<Array<Scalars['String']>>;
-};
-
-/**
- * Event sent when warehouse metadata is updated.
- *
- * Added in Saleor 3.8.
- *
- * Note: this API is currently in Feature Preview and can be subject to changes at later point.
- */
-export type WarehouseMetadataUpdated = Event & {
-  __typename?: 'WarehouseMetadataUpdated';
-  /** Time of the event. */
-  issuedAt?: Maybe<Scalars['DateTime']>;
-  /** The user or application that triggered the event. */
-  issuingPrincipal?: Maybe<IssuingPrincipal>;
-  /** The application receiving the webhook. */
-  recipient?: Maybe<App>;
-  /** Saleor version that triggered the event. */
-  version?: Maybe<Scalars['String']>;
-  /** The warehouse the event relates to. */
-  warehouse?: Maybe<Warehouse>;
 };
 
 /**
@@ -23803,42 +22072,18 @@ export enum WebhookEventTypeAsyncEnum {
   ChannelUpdated = 'CHANNEL_UPDATED',
   /** A new checkout is created. */
   CheckoutCreated = 'CHECKOUT_CREATED',
-  /**
-   * A checkout metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  CheckoutMetadataUpdated = 'CHECKOUT_METADATA_UPDATED',
   /** A checkout is updated. It also triggers all updates related to the checkout. */
   CheckoutUpdated = 'CHECKOUT_UPDATED',
   /** A new collection is created. */
   CollectionCreated = 'COLLECTION_CREATED',
   /** A collection is deleted. */
   CollectionDeleted = 'COLLECTION_DELETED',
-  /**
-   * A collection metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  CollectionMetadataUpdated = 'COLLECTION_METADATA_UPDATED',
   /** A collection is updated. */
   CollectionUpdated = 'COLLECTION_UPDATED',
   /** A new customer account is created. */
   CustomerCreated = 'CUSTOMER_CREATED',
   /** A customer account is deleted. */
   CustomerDeleted = 'CUSTOMER_DELETED',
-  /**
-   * A customer account metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  CustomerMetadataUpdated = 'CUSTOMER_METADATA_UPDATED',
   /** A customer account is updated. */
   CustomerUpdated = 'CUSTOMER_UPDATED',
   /** A draft order is created. */
@@ -23853,26 +22098,10 @@ export enum WebhookEventTypeAsyncEnum {
   FulfillmentCanceled = 'FULFILLMENT_CANCELED',
   /** A new fulfillment is created. */
   FulfillmentCreated = 'FULFILLMENT_CREATED',
-  /**
-   * A fulfillment metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  FulfillmentMetadataUpdated = 'FULFILLMENT_METADATA_UPDATED',
   /** A new gift card created. */
   GiftCardCreated = 'GIFT_CARD_CREATED',
   /** A gift card is deleted. */
   GiftCardDeleted = 'GIFT_CARD_DELETED',
-  /**
-   * A gift card metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  GiftCardMetadataUpdated = 'GIFT_CARD_METADATA_UPDATED',
   /** A gift card status is changed. */
   GiftCardStatusChanged = 'GIFT_CARD_STATUS_CHANGED',
   /** A gift card is updated. */
@@ -23909,14 +22138,6 @@ export enum WebhookEventTypeAsyncEnum {
   OrderFulfilled = 'ORDER_FULFILLED',
   /** Payment is made and an order is fully paid. */
   OrderFullyPaid = 'ORDER_FULLY_PAID',
-  /**
-   * An order metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  OrderMetadataUpdated = 'ORDER_METADATA_UPDATED',
   /** An order is updated; triggered for all changes related to an order; covers all other order webhooks, except for ORDER_CREATED. */
   OrderUpdated = 'ORDER_UPDATED',
   /** A new page is created. */
@@ -23941,14 +22162,6 @@ export enum WebhookEventTypeAsyncEnum {
   ProductCreated = 'PRODUCT_CREATED',
   /** A product is deleted. */
   ProductDeleted = 'PRODUCT_DELETED',
-  /**
-   * A product metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  ProductMetadataUpdated = 'PRODUCT_METADATA_UPDATED',
   /** A product is updated. */
   ProductUpdated = 'PRODUCT_UPDATED',
   /** A product variant is back in stock. */
@@ -23957,14 +22170,6 @@ export enum WebhookEventTypeAsyncEnum {
   ProductVariantCreated = 'PRODUCT_VARIANT_CREATED',
   /** A product variant is deleted. */
   ProductVariantDeleted = 'PRODUCT_VARIANT_DELETED',
-  /**
-   * A product variant metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  ProductVariantMetadataUpdated = 'PRODUCT_VARIANT_METADATA_UPDATED',
   /** A product variant is out of stock. */
   ProductVariantOutOfStock = 'PRODUCT_VARIANT_OUT_OF_STOCK',
   /** A product variant is updated. */
@@ -23987,14 +22192,6 @@ export enum WebhookEventTypeAsyncEnum {
   ShippingZoneCreated = 'SHIPPING_ZONE_CREATED',
   /** A shipping zone is deleted. */
   ShippingZoneDeleted = 'SHIPPING_ZONE_DELETED',
-  /**
-   * A shipping zone metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  ShippingZoneMetadataUpdated = 'SHIPPING_ZONE_METADATA_UPDATED',
   /** A shipping zone is updated. */
   ShippingZoneUpdated = 'SHIPPING_ZONE_UPDATED',
   /** A new staff user is created. */
@@ -24005,14 +22202,6 @@ export enum WebhookEventTypeAsyncEnum {
   StaffUpdated = 'STAFF_UPDATED',
   /** An action requested for transaction. */
   TransactionActionRequest = 'TRANSACTION_ACTION_REQUEST',
-  /**
-   * Transaction item metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  TransactionItemMetadataUpdated = 'TRANSACTION_ITEM_METADATA_UPDATED',
   /** A new translation is created. */
   TranslationCreated = 'TRANSLATION_CREATED',
   /** A translation is updated. */
@@ -24021,28 +22210,12 @@ export enum WebhookEventTypeAsyncEnum {
   VoucherCreated = 'VOUCHER_CREATED',
   /** A voucher is deleted. */
   VoucherDeleted = 'VOUCHER_DELETED',
-  /**
-   * A voucher metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  VoucherMetadataUpdated = 'VOUCHER_METADATA_UPDATED',
   /** A voucher is updated. */
   VoucherUpdated = 'VOUCHER_UPDATED',
   /** A new warehouse created. */
   WarehouseCreated = 'WAREHOUSE_CREATED',
   /** A warehouse is deleted. */
   WarehouseDeleted = 'WAREHOUSE_DELETED',
-  /**
-   * A warehouse metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  WarehouseMetadataUpdated = 'WAREHOUSE_METADATA_UPDATED',
   /** A warehouse is updated. */
   WarehouseUpdated = 'WAREHOUSE_UPDATED'
 }
@@ -24103,42 +22276,18 @@ export enum WebhookEventTypeEnum {
   CheckoutCreated = 'CHECKOUT_CREATED',
   /** Filter shipping methods for checkout. */
   CheckoutFilterShippingMethods = 'CHECKOUT_FILTER_SHIPPING_METHODS',
-  /**
-   * A checkout metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  CheckoutMetadataUpdated = 'CHECKOUT_METADATA_UPDATED',
   /** A checkout is updated. It also triggers all updates related to the checkout. */
   CheckoutUpdated = 'CHECKOUT_UPDATED',
   /** A new collection is created. */
   CollectionCreated = 'COLLECTION_CREATED',
   /** A collection is deleted. */
   CollectionDeleted = 'COLLECTION_DELETED',
-  /**
-   * A collection metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  CollectionMetadataUpdated = 'COLLECTION_METADATA_UPDATED',
   /** A collection is updated. */
   CollectionUpdated = 'COLLECTION_UPDATED',
   /** A new customer account is created. */
   CustomerCreated = 'CUSTOMER_CREATED',
   /** A customer account is deleted. */
   CustomerDeleted = 'CUSTOMER_DELETED',
-  /**
-   * A customer account metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  CustomerMetadataUpdated = 'CUSTOMER_METADATA_UPDATED',
   /** A customer account is updated. */
   CustomerUpdated = 'CUSTOMER_UPDATED',
   /** A draft order is created. */
@@ -24153,26 +22302,10 @@ export enum WebhookEventTypeEnum {
   FulfillmentCanceled = 'FULFILLMENT_CANCELED',
   /** A new fulfillment is created. */
   FulfillmentCreated = 'FULFILLMENT_CREATED',
-  /**
-   * A fulfillment metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  FulfillmentMetadataUpdated = 'FULFILLMENT_METADATA_UPDATED',
   /** A new gift card created. */
   GiftCardCreated = 'GIFT_CARD_CREATED',
   /** A gift card is deleted. */
   GiftCardDeleted = 'GIFT_CARD_DELETED',
-  /**
-   * A gift card metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  GiftCardMetadataUpdated = 'GIFT_CARD_METADATA_UPDATED',
   /** A gift card status is changed. */
   GiftCardStatusChanged = 'GIFT_CARD_STATUS_CHANGED',
   /** A gift card is updated. */
@@ -24219,14 +22352,6 @@ export enum WebhookEventTypeEnum {
   OrderFulfilled = 'ORDER_FULFILLED',
   /** Payment is made and an order is fully paid. */
   OrderFullyPaid = 'ORDER_FULLY_PAID',
-  /**
-   * An order metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  OrderMetadataUpdated = 'ORDER_METADATA_UPDATED',
   /** An order is updated; triggered for all changes related to an order; covers all other order webhooks, except for ORDER_CREATED. */
   OrderUpdated = 'ORDER_UPDATED',
   /** A new page is created. */
@@ -24265,14 +22390,6 @@ export enum WebhookEventTypeEnum {
   ProductCreated = 'PRODUCT_CREATED',
   /** A product is deleted. */
   ProductDeleted = 'PRODUCT_DELETED',
-  /**
-   * A product metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  ProductMetadataUpdated = 'PRODUCT_METADATA_UPDATED',
   /** A product is updated. */
   ProductUpdated = 'PRODUCT_UPDATED',
   /** A product variant is back in stock. */
@@ -24281,14 +22398,6 @@ export enum WebhookEventTypeEnum {
   ProductVariantCreated = 'PRODUCT_VARIANT_CREATED',
   /** A product variant is deleted. */
   ProductVariantDeleted = 'PRODUCT_VARIANT_DELETED',
-  /**
-   * A product variant metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  ProductVariantMetadataUpdated = 'PRODUCT_VARIANT_METADATA_UPDATED',
   /** A product variant is out of stock. */
   ProductVariantOutOfStock = 'PRODUCT_VARIANT_OUT_OF_STOCK',
   /** A product variant is updated. */
@@ -24313,14 +22422,6 @@ export enum WebhookEventTypeEnum {
   ShippingZoneCreated = 'SHIPPING_ZONE_CREATED',
   /** A shipping zone is deleted. */
   ShippingZoneDeleted = 'SHIPPING_ZONE_DELETED',
-  /**
-   * A shipping zone metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  ShippingZoneMetadataUpdated = 'SHIPPING_ZONE_METADATA_UPDATED',
   /** A shipping zone is updated. */
   ShippingZoneUpdated = 'SHIPPING_ZONE_UPDATED',
   /** A new staff user is created. */
@@ -24331,14 +22432,6 @@ export enum WebhookEventTypeEnum {
   StaffUpdated = 'STAFF_UPDATED',
   /** An action requested for transaction. */
   TransactionActionRequest = 'TRANSACTION_ACTION_REQUEST',
-  /**
-   * Transaction item metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  TransactionItemMetadataUpdated = 'TRANSACTION_ITEM_METADATA_UPDATED',
   /** A new translation is created. */
   TranslationCreated = 'TRANSLATION_CREATED',
   /** A translation is updated. */
@@ -24347,28 +22440,12 @@ export enum WebhookEventTypeEnum {
   VoucherCreated = 'VOUCHER_CREATED',
   /** A voucher is deleted. */
   VoucherDeleted = 'VOUCHER_DELETED',
-  /**
-   * A voucher metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  VoucherMetadataUpdated = 'VOUCHER_METADATA_UPDATED',
   /** A voucher is updated. */
   VoucherUpdated = 'VOUCHER_UPDATED',
   /** A new warehouse created. */
   WarehouseCreated = 'WAREHOUSE_CREATED',
   /** A warehouse is deleted. */
   WarehouseDeleted = 'WAREHOUSE_DELETED',
-  /**
-   * A warehouse metadata is updated.
-   *
-   * Added in Saleor 3.8.
-   *
-   * Note: this API is currently in Feature Preview and can be subject to changes at later point.
-   */
-  WarehouseMetadataUpdated = 'WAREHOUSE_METADATA_UPDATED',
   /** A warehouse is updated. */
   WarehouseUpdated = 'WAREHOUSE_UPDATED'
 }
@@ -24436,15 +22513,12 @@ export enum WebhookSampleEventTypeEnum {
   ChannelStatusChanged = 'CHANNEL_STATUS_CHANGED',
   ChannelUpdated = 'CHANNEL_UPDATED',
   CheckoutCreated = 'CHECKOUT_CREATED',
-  CheckoutMetadataUpdated = 'CHECKOUT_METADATA_UPDATED',
   CheckoutUpdated = 'CHECKOUT_UPDATED',
   CollectionCreated = 'COLLECTION_CREATED',
   CollectionDeleted = 'COLLECTION_DELETED',
-  CollectionMetadataUpdated = 'COLLECTION_METADATA_UPDATED',
   CollectionUpdated = 'COLLECTION_UPDATED',
   CustomerCreated = 'CUSTOMER_CREATED',
   CustomerDeleted = 'CUSTOMER_DELETED',
-  CustomerMetadataUpdated = 'CUSTOMER_METADATA_UPDATED',
   CustomerUpdated = 'CUSTOMER_UPDATED',
   DraftOrderCreated = 'DRAFT_ORDER_CREATED',
   DraftOrderDeleted = 'DRAFT_ORDER_DELETED',
@@ -24452,10 +22526,8 @@ export enum WebhookSampleEventTypeEnum {
   FulfillmentApproved = 'FULFILLMENT_APPROVED',
   FulfillmentCanceled = 'FULFILLMENT_CANCELED',
   FulfillmentCreated = 'FULFILLMENT_CREATED',
-  FulfillmentMetadataUpdated = 'FULFILLMENT_METADATA_UPDATED',
   GiftCardCreated = 'GIFT_CARD_CREATED',
   GiftCardDeleted = 'GIFT_CARD_DELETED',
-  GiftCardMetadataUpdated = 'GIFT_CARD_METADATA_UPDATED',
   GiftCardStatusChanged = 'GIFT_CARD_STATUS_CHANGED',
   GiftCardUpdated = 'GIFT_CARD_UPDATED',
   InvoiceDeleted = 'INVOICE_DELETED',
@@ -24474,7 +22546,6 @@ export enum WebhookSampleEventTypeEnum {
   OrderCreated = 'ORDER_CREATED',
   OrderFulfilled = 'ORDER_FULFILLED',
   OrderFullyPaid = 'ORDER_FULLY_PAID',
-  OrderMetadataUpdated = 'ORDER_METADATA_UPDATED',
   OrderUpdated = 'ORDER_UPDATED',
   PageCreated = 'PAGE_CREATED',
   PageDeleted = 'PAGE_DELETED',
@@ -24487,12 +22558,10 @@ export enum WebhookSampleEventTypeEnum {
   PermissionGroupUpdated = 'PERMISSION_GROUP_UPDATED',
   ProductCreated = 'PRODUCT_CREATED',
   ProductDeleted = 'PRODUCT_DELETED',
-  ProductMetadataUpdated = 'PRODUCT_METADATA_UPDATED',
   ProductUpdated = 'PRODUCT_UPDATED',
   ProductVariantBackInStock = 'PRODUCT_VARIANT_BACK_IN_STOCK',
   ProductVariantCreated = 'PRODUCT_VARIANT_CREATED',
   ProductVariantDeleted = 'PRODUCT_VARIANT_DELETED',
-  ProductVariantMetadataUpdated = 'PRODUCT_VARIANT_METADATA_UPDATED',
   ProductVariantOutOfStock = 'PRODUCT_VARIANT_OUT_OF_STOCK',
   ProductVariantUpdated = 'PRODUCT_VARIANT_UPDATED',
   SaleCreated = 'SALE_CREATED',
@@ -24504,22 +22573,18 @@ export enum WebhookSampleEventTypeEnum {
   ShippingPriceUpdated = 'SHIPPING_PRICE_UPDATED',
   ShippingZoneCreated = 'SHIPPING_ZONE_CREATED',
   ShippingZoneDeleted = 'SHIPPING_ZONE_DELETED',
-  ShippingZoneMetadataUpdated = 'SHIPPING_ZONE_METADATA_UPDATED',
   ShippingZoneUpdated = 'SHIPPING_ZONE_UPDATED',
   StaffCreated = 'STAFF_CREATED',
   StaffDeleted = 'STAFF_DELETED',
   StaffUpdated = 'STAFF_UPDATED',
   TransactionActionRequest = 'TRANSACTION_ACTION_REQUEST',
-  TransactionItemMetadataUpdated = 'TRANSACTION_ITEM_METADATA_UPDATED',
   TranslationCreated = 'TRANSLATION_CREATED',
   TranslationUpdated = 'TRANSLATION_UPDATED',
   VoucherCreated = 'VOUCHER_CREATED',
   VoucherDeleted = 'VOUCHER_DELETED',
-  VoucherMetadataUpdated = 'VOUCHER_METADATA_UPDATED',
   VoucherUpdated = 'VOUCHER_UPDATED',
   WarehouseCreated = 'WAREHOUSE_CREATED',
   WarehouseDeleted = 'WAREHOUSE_DELETED',
-  WarehouseMetadataUpdated = 'WAREHOUSE_METADATA_UPDATED',
   WarehouseUpdated = 'WAREHOUSE_UPDATED'
 }
 
@@ -29410,15 +27475,6 @@ export default {
         "name": "AttributeValueTranslatableContent",
         "fields": [
           {
-            "name": "attribute",
-            "type": {
-              "kind": "OBJECT",
-              "name": "AttributeTranslatableContent",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
             "name": "attributeValue",
             "type": {
               "kind": "OBJECT",
@@ -29893,64 +27949,6 @@ export default {
       },
       {
         "kind": "OBJECT",
-        "name": "CalculateTaxes",
-        "fields": [
-          {
-            "name": "issuedAt",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "issuingPrincipal",
-            "type": {
-              "kind": "UNION",
-              "name": "IssuingPrincipal",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "recipient",
-            "type": {
-              "kind": "OBJECT",
-              "name": "App",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "taxBase",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "TaxableObject",
-                "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "version",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Event"
-          }
-        ]
-      },
-      {
-        "kind": "OBJECT",
         "name": "Category",
         "fields": [
           {
@@ -30259,13 +28257,6 @@ export default {
                 }
               },
               {
-                "name": "filter",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
                 "name": "first",
                 "type": {
                   "kind": "SCALAR",
@@ -30274,13 +28265,6 @@ export default {
               },
               {
                 "name": "last",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "sortBy",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Any"
@@ -31876,17 +29860,6 @@ export default {
             "args": []
           },
           {
-            "name": "displayGrossPrices",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
             "name": "email",
             "type": {
               "kind": "SCALAR",
@@ -32178,17 +30151,6 @@ export default {
                 "kind": "OBJECT",
                 "name": "TaxedMoney",
                 "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "taxExemption",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
               }
             },
             "args": []
@@ -33509,61 +31471,6 @@ export default {
       },
       {
         "kind": "OBJECT",
-        "name": "CheckoutMetadataUpdated",
-        "fields": [
-          {
-            "name": "checkout",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Checkout",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "issuedAt",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "issuingPrincipal",
-            "type": {
-              "kind": "UNION",
-              "name": "IssuingPrincipal",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "recipient",
-            "type": {
-              "kind": "OBJECT",
-              "name": "App",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "version",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Event"
-          }
-        ]
-      },
-      {
-        "kind": "OBJECT",
         "name": "CheckoutPaymentCreate",
         "fields": [
           {
@@ -34826,69 +32733,6 @@ export default {
       },
       {
         "kind": "OBJECT",
-        "name": "CollectionMetadataUpdated",
-        "fields": [
-          {
-            "name": "collection",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Collection",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "channel",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              }
-            ]
-          },
-          {
-            "name": "issuedAt",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "issuingPrincipal",
-            "type": {
-              "kind": "UNION",
-              "name": "IssuingPrincipal",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "recipient",
-            "type": {
-              "kind": "OBJECT",
-              "name": "App",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "version",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Event"
-          }
-        ]
-      },
-      {
-        "kind": "OBJECT",
         "name": "CollectionRemoveProducts",
         "fields": [
           {
@@ -35950,61 +33794,6 @@ export default {
           {
             "kind": "INTERFACE",
             "name": "Node"
-          }
-        ]
-      },
-      {
-        "kind": "OBJECT",
-        "name": "CustomerMetadataUpdated",
-        "fields": [
-          {
-            "name": "issuedAt",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "issuingPrincipal",
-            "type": {
-              "kind": "UNION",
-              "name": "IssuingPrincipal",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "recipient",
-            "type": {
-              "kind": "OBJECT",
-              "name": "App",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "user",
-            "type": {
-              "kind": "OBJECT",
-              "name": "User",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "version",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Event"
           }
         ]
       },
@@ -37552,10 +35341,6 @@ export default {
           },
           {
             "kind": "OBJECT",
-            "name": "CalculateTaxes"
-          },
-          {
-            "kind": "OBJECT",
             "name": "CategoryCreated"
           },
           {
@@ -37592,10 +35377,6 @@ export default {
           },
           {
             "kind": "OBJECT",
-            "name": "CheckoutMetadataUpdated"
-          },
-          {
-            "kind": "OBJECT",
             "name": "CheckoutUpdated"
           },
           {
@@ -37608,19 +35389,11 @@ export default {
           },
           {
             "kind": "OBJECT",
-            "name": "CollectionMetadataUpdated"
-          },
-          {
-            "kind": "OBJECT",
             "name": "CollectionUpdated"
           },
           {
             "kind": "OBJECT",
             "name": "CustomerCreated"
-          },
-          {
-            "kind": "OBJECT",
-            "name": "CustomerMetadataUpdated"
           },
           {
             "kind": "OBJECT",
@@ -37652,19 +35425,11 @@ export default {
           },
           {
             "kind": "OBJECT",
-            "name": "FulfillmentMetadataUpdated"
-          },
-          {
-            "kind": "OBJECT",
             "name": "GiftCardCreated"
           },
           {
             "kind": "OBJECT",
             "name": "GiftCardDeleted"
-          },
-          {
-            "kind": "OBJECT",
-            "name": "GiftCardMetadataUpdated"
           },
           {
             "kind": "OBJECT",
@@ -37733,10 +35498,6 @@ export default {
           {
             "kind": "OBJECT",
             "name": "OrderFullyPaid"
-          },
-          {
-            "kind": "OBJECT",
-            "name": "OrderMetadataUpdated"
           },
           {
             "kind": "OBJECT",
@@ -37816,10 +35577,6 @@ export default {
           },
           {
             "kind": "OBJECT",
-            "name": "ProductMetadataUpdated"
-          },
-          {
-            "kind": "OBJECT",
             "name": "ProductUpdated"
           },
           {
@@ -37833,10 +35590,6 @@ export default {
           {
             "kind": "OBJECT",
             "name": "ProductVariantDeleted"
-          },
-          {
-            "kind": "OBJECT",
-            "name": "ProductVariantMetadataUpdated"
           },
           {
             "kind": "OBJECT",
@@ -37888,10 +35641,6 @@ export default {
           },
           {
             "kind": "OBJECT",
-            "name": "ShippingZoneMetadataUpdated"
-          },
-          {
-            "kind": "OBJECT",
             "name": "ShippingZoneUpdated"
           },
           {
@@ -37912,10 +35661,6 @@ export default {
           },
           {
             "kind": "OBJECT",
-            "name": "TransactionItemMetadataUpdated"
-          },
-          {
-            "kind": "OBJECT",
             "name": "TranslationCreated"
           },
           {
@@ -37932,10 +35677,6 @@ export default {
           },
           {
             "kind": "OBJECT",
-            "name": "VoucherMetadataUpdated"
-          },
-          {
-            "kind": "OBJECT",
             "name": "VoucherUpdated"
           },
           {
@@ -37945,10 +35686,6 @@ export default {
           {
             "kind": "OBJECT",
             "name": "WarehouseDeleted"
-          },
-          {
-            "kind": "OBJECT",
-            "name": "WarehouseMetadataUpdated"
           },
           {
             "kind": "OBJECT",
@@ -39788,70 +37525,6 @@ export default {
       },
       {
         "kind": "OBJECT",
-        "name": "FulfillmentMetadataUpdated",
-        "fields": [
-          {
-            "name": "fulfillment",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Fulfillment",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "issuedAt",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "issuingPrincipal",
-            "type": {
-              "kind": "UNION",
-              "name": "IssuingPrincipal",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "order",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Order",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "recipient",
-            "type": {
-              "kind": "OBJECT",
-              "name": "App",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "version",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Event"
-          }
-        ]
-      },
-      {
-        "kind": "OBJECT",
         "name": "FulfillmentRefundProducts",
         "fields": [
           {
@@ -41279,61 +38952,6 @@ export default {
           }
         ],
         "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "GiftCardMetadataUpdated",
-        "fields": [
-          {
-            "name": "giftCard",
-            "type": {
-              "kind": "OBJECT",
-              "name": "GiftCard",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "issuedAt",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "issuingPrincipal",
-            "type": {
-              "kind": "UNION",
-              "name": "IssuingPrincipal",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "recipient",
-            "type": {
-              "kind": "OBJECT",
-              "name": "App",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "version",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Event"
-          }
-        ]
       },
       {
         "kind": "OBJECT",
@@ -42842,14 +40460,6 @@ export default {
           },
           {
             "name": "appUrl",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "audience",
             "type": {
               "kind": "SCALAR",
               "name": "Any"
@@ -46130,19 +43740,6 @@ export default {
                 }
               },
               {
-                "name": "metadata",
-                "type": {
-                  "kind": "LIST",
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Any"
-                    }
-                  }
-                }
-              },
-              {
                 "name": "paymentData",
                 "type": {
                   "kind": "SCALAR",
@@ -48607,32 +46204,6 @@ export default {
                 }
               },
               {
-                "name": "metadata",
-                "type": {
-                  "kind": "LIST",
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Any"
-                    }
-                  }
-                }
-              },
-              {
-                "name": "privateMetadata",
-                "type": {
-                  "kind": "LIST",
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Any"
-                    }
-                  }
-                }
-              },
-              {
                 "name": "removeCheckout",
                 "type": {
                   "kind": "SCALAR",
@@ -50520,25 +48091,15 @@ export default {
               {
                 "name": "ids",
                 "type": {
-                  "kind": "LIST",
+                  "kind": "NON_NULL",
                   "ofType": {
-                    "kind": "NON_NULL",
+                    "kind": "LIST",
                     "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Any"
-                    }
-                  }
-                }
-              },
-              {
-                "name": "skus",
-                "type": {
-                  "kind": "LIST",
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Any"
+                      "kind": "NON_NULL",
+                      "ofType": {
+                        "kind": "SCALAR",
+                        "name": "Any"
+                      }
                     }
                   }
                 }
@@ -50556,8 +48117,11 @@ export default {
               {
                 "name": "id",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               },
               {
@@ -50574,13 +48138,6 @@ export default {
                       }
                     }
                   }
-                }
-              },
-              {
-                "name": "sku",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
                 }
               }
             ]
@@ -50616,15 +48173,11 @@ export default {
               {
                 "name": "id",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "sku",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               }
             ]
@@ -50806,17 +48359,13 @@ export default {
             },
             "args": [
               {
-                "name": "sku",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
                 "name": "variantId",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               },
               {
@@ -50843,13 +48392,6 @@ export default {
             },
             "args": [
               {
-                "name": "sku",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
                 "name": "stocks",
                 "type": {
                   "kind": "NON_NULL",
@@ -50868,8 +48410,11 @@ export default {
               {
                 "name": "variantId",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               }
             ]
@@ -50925,8 +48470,11 @@ export default {
               {
                 "name": "id",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               },
               {
@@ -50937,13 +48485,6 @@ export default {
                     "kind": "SCALAR",
                     "name": "Any"
                   }
-                }
-              },
-              {
-                "name": "sku",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
                 }
               }
             ]
@@ -51886,192 +49427,6 @@ export default {
             ]
           },
           {
-            "name": "taxClassCreate",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxClassCreate",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "input",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "taxClassDelete",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxClassDelete",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "id",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "taxClassUpdate",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxClassUpdate",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "id",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              },
-              {
-                "name": "input",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "taxConfigurationUpdate",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxConfigurationUpdate",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "id",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              },
-              {
-                "name": "input",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "taxCountryConfigurationDelete",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxCountryConfigurationDelete",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "countryCode",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "taxCountryConfigurationUpdate",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxCountryConfigurationUpdate",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "countryCode",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              },
-              {
-                "name": "updateTaxClassRates",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "LIST",
-                    "ofType": {
-                      "kind": "NON_NULL",
-                      "ofType": {
-                        "kind": "SCALAR",
-                        "name": "Any"
-                      }
-                    }
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "taxExemptionManage",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxExemptionManage",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "id",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              },
-              {
-                "name": "taxExemption",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
             "name": "tokenCreate",
             "type": {
               "kind": "OBJECT",
@@ -52079,13 +49434,6 @@ export default {
               "ofType": null
             },
             "args": [
-              {
-                "name": "audience",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
               {
                 "name": "email",
                 "type": {
@@ -53143,14 +50491,6 @@ export default {
           },
           {
             "kind": "OBJECT",
-            "name": "TaxClass"
-          },
-          {
-            "kind": "OBJECT",
-            "name": "TaxConfiguration"
-          },
-          {
-            "kind": "OBJECT",
             "name": "Transaction"
           },
           {
@@ -53411,14 +50751,6 @@ export default {
           {
             "kind": "OBJECT",
             "name": "ShippingZone"
-          },
-          {
-            "kind": "OBJECT",
-            "name": "TaxClass"
-          },
-          {
-            "kind": "OBJECT",
-            "name": "TaxConfiguration"
           },
           {
             "kind": "OBJECT",
@@ -54047,59 +51379,6 @@ export default {
             "args": []
           },
           {
-            "name": "shippingTaxClass",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxClass",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "shippingTaxClassMetadata",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "MetadataItem",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "shippingTaxClassName",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "shippingTaxClassPrivateMetadata",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "MetadataItem",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
             "name": "shippingTaxRate",
             "type": {
               "kind": "NON_NULL",
@@ -54140,17 +51419,6 @@ export default {
                 "kind": "OBJECT",
                 "name": "TaxedMoney",
                 "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "taxExemption",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
               }
             },
             "args": []
@@ -56160,59 +53428,6 @@ export default {
             "args": []
           },
           {
-            "name": "taxClass",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxClass",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "taxClassMetadata",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "MetadataItem",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "taxClassName",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "taxClassPrivateMetadata",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "MetadataItem",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
             "name": "taxRate",
             "type": {
               "kind": "NON_NULL",
@@ -56738,61 +53953,6 @@ export default {
           }
         ],
         "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "OrderMetadataUpdated",
-        "fields": [
-          {
-            "name": "issuedAt",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "issuingPrincipal",
-            "type": {
-              "kind": "UNION",
-              "name": "IssuingPrincipal",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "order",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Order",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "recipient",
-            "type": {
-              "kind": "OBJECT",
-              "name": "App",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "version",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Event"
-          }
-        ]
       },
       {
         "kind": "OBJECT",
@@ -61251,26 +58411,6 @@ export default {
         "name": "Product",
         "fields": [
           {
-            "name": "attribute",
-            "type": {
-              "kind": "OBJECT",
-              "name": "SelectedAttribute",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "slug",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
             "name": "attributes",
             "type": {
               "kind": "NON_NULL",
@@ -61478,15 +58618,7 @@ export default {
                 }
               }
             },
-            "args": [
-              {
-                "name": "sortBy",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              }
-            ]
+            "args": []
           },
           {
             "name": "mediaById",
@@ -61699,15 +58831,6 @@ export default {
             "args": []
           },
           {
-            "name": "taxClass",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxClass",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
             "name": "taxType",
             "type": {
               "kind": "OBJECT",
@@ -61770,30 +58893,6 @@ export default {
               }
             },
             "args": []
-          },
-          {
-            "name": "variant",
-            "type": {
-              "kind": "OBJECT",
-              "name": "ProductVariant",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "id",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "sku",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              }
-            ]
           },
           {
             "name": "variants",
@@ -63165,78 +60264,6 @@ export default {
       },
       {
         "kind": "OBJECT",
-        "name": "ProductMetadataUpdated",
-        "fields": [
-          {
-            "name": "category",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Category",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "issuedAt",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "issuingPrincipal",
-            "type": {
-              "kind": "UNION",
-              "name": "IssuingPrincipal",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "product",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Product",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "channel",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              }
-            ]
-          },
-          {
-            "name": "recipient",
-            "type": {
-              "kind": "OBJECT",
-              "name": "App",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "version",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Event"
-          }
-        ]
-      },
-      {
-        "kind": "OBJECT",
         "name": "ProductPricingInfo",
         "fields": [
           {
@@ -63254,17 +60281,6 @@ export default {
               "kind": "OBJECT",
               "name": "TaxedMoney",
               "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "displayGrossPrices",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
             },
             "args": []
           },
@@ -63922,15 +60938,6 @@ export default {
                 "kind": "SCALAR",
                 "name": "Any"
               }
-            },
-            "args": []
-          },
-          {
-            "name": "taxClass",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxClass",
-              "ofType": null
             },
             "args": []
           },
@@ -65459,69 +62466,6 @@ export default {
       {
         "kind": "OBJECT",
         "name": "ProductVariantDeleted",
-        "fields": [
-          {
-            "name": "issuedAt",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "issuingPrincipal",
-            "type": {
-              "kind": "UNION",
-              "name": "IssuingPrincipal",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "productVariant",
-            "type": {
-              "kind": "OBJECT",
-              "name": "ProductVariant",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "channel",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              }
-            ]
-          },
-          {
-            "name": "recipient",
-            "type": {
-              "kind": "OBJECT",
-              "name": "App",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "version",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Event"
-          }
-        ]
-      },
-      {
-        "kind": "OBJECT",
-        "name": "ProductVariantMetadataUpdated",
         "fields": [
           {
             "name": "issuedAt",
@@ -68683,178 +65627,6 @@ export default {
             ]
           },
           {
-            "name": "taxClass",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxClass",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "id",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "taxClasses",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxClassCountableConnection",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "after",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "before",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "filter",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "first",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "last",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "sortBy",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              }
-            ]
-          },
-          {
-            "name": "taxConfiguration",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxConfiguration",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "id",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "taxConfigurations",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxConfigurationCountableConnection",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "after",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "before",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "filter",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "first",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "last",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              }
-            ]
-          },
-          {
-            "name": "taxCountryConfiguration",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxCountryConfiguration",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "countryCode",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "taxCountryConfigurations",
-            "type": {
-              "kind": "LIST",
-              "ofType": {
-                "kind": "NON_NULL",
-                "ofType": {
-                  "kind": "OBJECT",
-                  "name": "TaxCountryConfiguration",
-                  "ofType": null
-                }
-              }
-            },
-            "args": []
-          },
-          {
             "name": "taxTypes",
             "type": {
               "kind": "LIST",
@@ -71792,15 +68564,6 @@ export default {
             ]
           },
           {
-            "name": "taxClass",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxClass",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
             "name": "translation",
             "type": {
               "kind": "OBJECT",
@@ -73058,69 +69821,6 @@ export default {
       {
         "kind": "OBJECT",
         "name": "ShippingZoneDeleted",
-        "fields": [
-          {
-            "name": "issuedAt",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "issuingPrincipal",
-            "type": {
-              "kind": "UNION",
-              "name": "IssuingPrincipal",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "recipient",
-            "type": {
-              "kind": "OBJECT",
-              "name": "App",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "shippingZone",
-            "type": {
-              "kind": "OBJECT",
-              "name": "ShippingZone",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "channel",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              }
-            ]
-          },
-          {
-            "name": "version",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Event"
-          }
-        ]
-      },
-      {
-        "kind": "OBJECT",
-        "name": "ShippingZoneMetadataUpdated",
         "fields": [
           {
             "name": "issuedAt",
@@ -74998,1243 +71698,6 @@ export default {
       },
       {
         "kind": "OBJECT",
-        "name": "TaxClass",
-        "fields": [
-          {
-            "name": "countries",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "TaxClassCountryRate",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "id",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "metadata",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "MetadataItem",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "metafield",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": [
-              {
-                "name": "key",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "metafields",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": [
-              {
-                "name": "keys",
-                "type": {
-                  "kind": "LIST",
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Any"
-                    }
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "name",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "privateMetadata",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "MetadataItem",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "privateMetafield",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": [
-              {
-                "name": "key",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "privateMetafields",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": [
-              {
-                "name": "keys",
-                "type": {
-                  "kind": "LIST",
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Any"
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        ],
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Node"
-          },
-          {
-            "kind": "INTERFACE",
-            "name": "ObjectWithMetadata"
-          }
-        ]
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxClassCountableConnection",
-        "fields": [
-          {
-            "name": "edges",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "TaxClassCountableEdge",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "pageInfo",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "PageInfo",
-                "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "totalCount",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxClassCountableEdge",
-        "fields": [
-          {
-            "name": "cursor",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "node",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "TaxClass",
-                "ofType": null
-              }
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxClassCountryRate",
-        "fields": [
-          {
-            "name": "country",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "CountryDisplay",
-                "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "rate",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "taxClass",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxClass",
-              "ofType": null
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxClassCreate",
-        "fields": [
-          {
-            "name": "errors",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "TaxClassCreateError",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "taxClass",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxClass",
-              "ofType": null
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxClassCreateError",
-        "fields": [
-          {
-            "name": "code",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "countryCodes",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "field",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "message",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxClassDelete",
-        "fields": [
-          {
-            "name": "errors",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "TaxClassDeleteError",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "taxClass",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxClass",
-              "ofType": null
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxClassDeleteError",
-        "fields": [
-          {
-            "name": "code",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "field",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "message",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxClassUpdate",
-        "fields": [
-          {
-            "name": "errors",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "TaxClassUpdateError",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "taxClass",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxClass",
-              "ofType": null
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxClassUpdateError",
-        "fields": [
-          {
-            "name": "code",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "countryCodes",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "field",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "message",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxConfiguration",
-        "fields": [
-          {
-            "name": "channel",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "Channel",
-                "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "chargeTaxes",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "countries",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "TaxConfigurationPerCountry",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "displayGrossPrices",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "id",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "metadata",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "MetadataItem",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "metafield",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": [
-              {
-                "name": "key",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "metafields",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": [
-              {
-                "name": "keys",
-                "type": {
-                  "kind": "LIST",
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Any"
-                    }
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "pricesEnteredWithTax",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "privateMetadata",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "MetadataItem",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "privateMetafield",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": [
-              {
-                "name": "key",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "privateMetafields",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": [
-              {
-                "name": "keys",
-                "type": {
-                  "kind": "LIST",
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "ofType": {
-                      "kind": "SCALAR",
-                      "name": "Any"
-                    }
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "taxCalculationStrategy",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Node"
-          },
-          {
-            "kind": "INTERFACE",
-            "name": "ObjectWithMetadata"
-          }
-        ]
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxConfigurationCountableConnection",
-        "fields": [
-          {
-            "name": "edges",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "TaxConfigurationCountableEdge",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "pageInfo",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "PageInfo",
-                "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "totalCount",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxConfigurationCountableEdge",
-        "fields": [
-          {
-            "name": "cursor",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "node",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "TaxConfiguration",
-                "ofType": null
-              }
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxConfigurationPerCountry",
-        "fields": [
-          {
-            "name": "chargeTaxes",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "country",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "CountryDisplay",
-                "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "displayGrossPrices",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "taxCalculationStrategy",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxConfigurationUpdate",
-        "fields": [
-          {
-            "name": "errors",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "TaxConfigurationUpdateError",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "taxConfiguration",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxConfiguration",
-              "ofType": null
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxConfigurationUpdateError",
-        "fields": [
-          {
-            "name": "code",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "countryCodes",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "field",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "message",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxCountryConfiguration",
-        "fields": [
-          {
-            "name": "country",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "CountryDisplay",
-                "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "taxClassCountryRates",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "TaxClassCountryRate",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxCountryConfigurationDelete",
-        "fields": [
-          {
-            "name": "errors",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "TaxCountryConfigurationDeleteError",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "taxCountryConfiguration",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxCountryConfiguration",
-              "ofType": null
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxCountryConfigurationDeleteError",
-        "fields": [
-          {
-            "name": "code",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "field",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "message",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxCountryConfigurationUpdate",
-        "fields": [
-          {
-            "name": "errors",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "TaxCountryConfigurationUpdateError",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "taxCountryConfiguration",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TaxCountryConfiguration",
-              "ofType": null
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxCountryConfigurationUpdateError",
-        "fields": [
-          {
-            "name": "code",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "field",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "message",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "taxClassIds",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxExemptionManage",
-        "fields": [
-          {
-            "name": "errors",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "TaxExemptionManageError",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "taxableObject",
-            "type": {
-              "kind": "UNION",
-              "name": "TaxSourceObject",
-              "ofType": null
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxExemptionManageError",
-        "fields": [
-          {
-            "name": "code",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "field",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "message",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "UNION",
-        "name": "TaxSourceLine",
-        "possibleTypes": [
-          {
-            "kind": "OBJECT",
-            "name": "CheckoutLine"
-          },
-          {
-            "kind": "OBJECT",
-            "name": "OrderLine"
-          }
-        ]
-      },
-      {
-        "kind": "UNION",
-        "name": "TaxSourceObject",
-        "possibleTypes": [
-          {
-            "kind": "OBJECT",
-            "name": "Checkout"
-          },
-          {
-            "kind": "OBJECT",
-            "name": "Order"
-          }
-        ]
-      },
-      {
-        "kind": "OBJECT",
         "name": "TaxType",
         "fields": [
           {
@@ -76250,238 +71713,6 @@ export default {
             "type": {
               "kind": "SCALAR",
               "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxableObject",
-        "fields": [
-          {
-            "name": "address",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Address",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "channel",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "Channel",
-                "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "currency",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "discounts",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "TaxableObjectDiscount",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "lines",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "TaxableObjectLine",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "pricesEnteredWithTax",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "shippingPrice",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "Money",
-                "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "sourceObject",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "UNION",
-                "name": "TaxSourceObject",
-                "ofType": null
-              }
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxableObjectDiscount",
-        "fields": [
-          {
-            "name": "amount",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "Money",
-                "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "name",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "TaxableObjectLine",
-        "fields": [
-          {
-            "name": "chargeTaxes",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "productName",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "productSku",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "quantity",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "sourceLine",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "UNION",
-                "name": "TaxSourceLine",
-                "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "totalPrice",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "Money",
-                "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "unitPrice",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "Money",
-                "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "variantName",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
-              }
             },
             "args": []
           }
@@ -77222,61 +72453,6 @@ export default {
       },
       {
         "kind": "OBJECT",
-        "name": "TransactionItemMetadataUpdated",
-        "fields": [
-          {
-            "name": "issuedAt",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "issuingPrincipal",
-            "type": {
-              "kind": "UNION",
-              "name": "IssuingPrincipal",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "recipient",
-            "type": {
-              "kind": "OBJECT",
-              "name": "App",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "transaction",
-            "type": {
-              "kind": "OBJECT",
-              "name": "TransactionItem",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "version",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          }
-        ],
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Event"
-          }
-        ]
-      },
-      {
-        "kind": "OBJECT",
         "name": "TransactionRequestAction",
         "fields": [
           {
@@ -77960,51 +73136,6 @@ export default {
             "args": [
               {
                 "name": "channel",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              }
-            ]
-          },
-          {
-            "name": "checkouts",
-            "type": {
-              "kind": "OBJECT",
-              "name": "CheckoutCountableConnection",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "after",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "before",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "channel",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "first",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              },
-              {
-                "name": "last",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Any"
@@ -80042,69 +75173,6 @@ export default {
       },
       {
         "kind": "OBJECT",
-        "name": "VoucherMetadataUpdated",
-        "fields": [
-          {
-            "name": "issuedAt",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "issuingPrincipal",
-            "type": {
-              "kind": "UNION",
-              "name": "IssuingPrincipal",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "recipient",
-            "type": {
-              "kind": "OBJECT",
-              "name": "App",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "version",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "voucher",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Voucher",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "channel",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
-                }
-              }
-            ]
-          }
-        ],
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Event"
-          }
-        ]
-      },
-      {
-        "kind": "OBJECT",
         "name": "VoucherRemoveCatalogues",
         "fields": [
           {
@@ -81025,61 +76093,6 @@ export default {
           }
         ],
         "interfaces": []
-      },
-      {
-        "kind": "OBJECT",
-        "name": "WarehouseMetadataUpdated",
-        "fields": [
-          {
-            "name": "issuedAt",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "issuingPrincipal",
-            "type": {
-              "kind": "UNION",
-              "name": "IssuingPrincipal",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "recipient",
-            "type": {
-              "kind": "OBJECT",
-              "name": "App",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "version",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "warehouse",
-            "type": {
-              "kind": "OBJECT",
-              "name": "Warehouse",
-              "ofType": null
-            },
-            "args": []
-          }
-        ],
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "Event"
-          }
-        ]
       },
       {
         "kind": "OBJECT",
