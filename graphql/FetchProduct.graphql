@@ -1,0 +1,10 @@
+query FetchProduct($id: ID!) {
+  product(id: $id) {
+    id
+    name
+    media {
+      url
+      alt
+    }
+  }
+}

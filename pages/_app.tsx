@@ -1,15 +1,11 @@
-import "../public/styles/global.css";
 import type { AppProps } from "next/app";
-import { createClient, Provider } from "urql";
-import { API_URL } from "../constants";
-
-const client = createClient({
-  url: API_URL,
-});
+import { Provider } from "urql";
+import "../public/styles/global.css";
+import { apiClient } from "../src/api/client";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <Provider value={client}>
+    <Provider value={apiClient}>
       <main className="container">
         <h1>Saleor + Next = 🫶</h1>
         <Component {...pageProps} />
