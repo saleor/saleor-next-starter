@@ -25,6 +25,6 @@
 </div>
 
 ## Stack:
-- Next.js with SSR
-- Urql
-- GraphQL Code Generator
+- [Next.js](https://nextjs.org/) with static data fetching
+- [urql](https://formidable.com/open-source/urql/)
+- [GraphQL Code Generator](https://the-guild.dev/graphql/codegen)
