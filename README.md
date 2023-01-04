@@ -26,11 +26,9 @@
 
 ## Motivation
 
-💪 **strong foundations**: Get productive quickly with code generation and types.
+🤏 **Bare bones**: Useful for prototyping or building your stack from scratch.
 
-🤏 **minimalistic**: We don't want you removing tons of unflexible, opinionated code.
-
-🏎️ **modern & fast**: Leverage all the best practices for e-commerce, like SSR, ISR, and image optimization.
+💪 **Typesafe**: Get productive with code generation and types.
 
 
 ## Stack:
