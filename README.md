@@ -1,4 +1,4 @@
-![Next js + Saleor (1)](https://user-images.githubusercontent.com/44495184/210510701-5222bbb4-90b3-4540-a5ea-9c9c79633c57.png)
+![Next js + Saleor (1)](https://user-images.githubusercontent.com/44495184/210545042-0537d49f-6ab8-4e52-af75-225370789c2b.png)
 
 <div align="center">
   <h1>Saleor Next Boilerplate</h1>
