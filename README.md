@@ -39,7 +39,7 @@
 - [GraphQL Code Generator](https://the-guild.dev/graphql/codegen)
 
 ## Quickstart
-1. Clone the repository from the template
+1. Create a new repository from this template ("Use this template")
 2. Create `.env` file based on `.env.example`:
 
 ```bash
