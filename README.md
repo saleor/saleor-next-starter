@@ -25,6 +25,7 @@
 </div>
 
 ## Stack:
+- [TypeScript](https://www.typescriptlang.org/)
 - [Next.js](https://nextjs.org/) with static data fetching
 - [urql](https://formidable.com/open-source/urql/)
 - [GraphQL Code Generator](https://the-guild.dev/graphql/codegen)
