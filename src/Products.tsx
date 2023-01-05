@@ -5,7 +5,7 @@ import { useFetchProductsQuery } from "../generated/graphql";
 
 export const Products = () => {
   const [{ data }] = useFetchProductsQuery({
-    variables: { channel: DEFAULT_CHANNEl },
+    variables: { channel: DEFAULT_CHANNEl, first: 9 },
   });
 
   return (

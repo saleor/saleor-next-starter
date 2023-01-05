@@ -19,6 +19,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const { data } = await apiClient
     .query<FetchProductsQuery>(FetchProductsDocument, {
       channel: DEFAULT_CHANNEl,
+      first: 9,
     } as FetchProductsQueryVariables)
     .toPromise();
 

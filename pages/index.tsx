@@ -1,7 +1,7 @@
 import { GetStaticProps } from "next";
 import { initUrqlClient, withUrqlClient } from "next-urql";
 import { cacheExchange, dedupExchange, fetchExchange, ssrExchange } from "urql";
-import { API_URL } from "../constants";
+import { API_URL, DEFAULT_CHANNEl } from "../constants";
 import {
   FetchProductsDocument,
   FetchProductsQuery,
@@ -23,7 +23,8 @@ export const getStaticProps: GetStaticProps = async () => {
   // used on this page.
   await client
     ?.query<FetchProductsQuery>(FetchProductsDocument, {
-      channel: "default-channel",
+      channel: DEFAULT_CHANNEl,
+      first: 9,
     } as FetchProductsQueryVariables)
     .toPromise();
 
