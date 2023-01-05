@@ -10,6 +10,9 @@ import {
 import { Products } from "../src/Products";
 
 export const getStaticProps: GetStaticProps = async () => {
+  // The following content of "getStaticProps" is needed to populate the cache,
+  // so you can consume the data through the "useFetchProductsQuery" hook without making an extra request.
+  // Read more in urql documentation: https://formidable.com/open-source/urql/docs/advanced/server-side-rendering/#ssr-with-getstaticprops-or-getserversideprops
   const ssrCache = ssrExchange({ isClient: false });
   const client = initUrqlClient(
     {
@@ -19,8 +22,6 @@ export const getStaticProps: GetStaticProps = async () => {
     false
   );
 
-  // This query is used to populate the cache for the query
-  // used on this page.
   await client
     ?.query<FetchProductsQuery>(FetchProductsDocument, {
       channel: DEFAULT_CHANNEl,
