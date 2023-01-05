@@ -42,11 +42,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
     false
   );
 
-  // This query is used to populate the cache for the query
-  // used on this page.
   await client
     ?.query<FetchProductQuery>(FetchProductDocument, {
       id,
+      channel: DEFAULT_CHANNEl,
     } as FetchProductQueryVariables)
     .toPromise();
 
@@ -61,7 +60,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
 const ProductPage = () => {
   const { query } = useRouter();
   const id = (Array.isArray(query.id) ? query.id[0] : query.id) ?? "";
-  const [{ data }] = useFetchProductQuery({ variables: { id } });
+  const [{ data }] = useFetchProductQuery({
+    variables: { id, channel: DEFAULT_CHANNEl },
+  });
+
   const firstImage = data?.product?.media?.[0];
   return (
     <div>

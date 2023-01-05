@@ -1,5 +1,5 @@
-query FetchProduct($id: ID!) {
-  product(id: $id) {
+query FetchProduct($id: ID!, $channel: String!) {
+  product(id: $id, channel: $channel) {
     id
     name
     media {
