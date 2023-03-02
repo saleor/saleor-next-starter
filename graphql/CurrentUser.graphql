@@ -1,0 +1,17 @@
+query CurrentUser {
+  me {
+    id
+    lastLogin
+    dateJoined
+    email
+    firstName
+    lastName
+    avatar {
+      url
+      alt
+    }
+    orders {
+      totalCount
+    }
+  }
+}

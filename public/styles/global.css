@@ -44,6 +44,14 @@ body {
   box-shadow: var(--shadow-elevation-medium);
 }
 
+.button {
+  appearance: none;
+  display: block;
+  text-align: center;
+  width: 80px;
+  height: 35px;
+}
+
 @media (min-width: 640px) {
   .grid-list {
     grid-template-columns: repeat(3, 1fr);
