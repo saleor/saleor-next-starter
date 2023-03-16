@@ -68,3 +68,16 @@ form {
 .error {
   color: crimson;
 }
+
+.info {
+  /* light gray */
+  color: #999;
+  font-size: 0.75rem;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+}
