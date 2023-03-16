@@ -30,7 +30,19 @@ export default function App({ Component, pageProps }: AppProps) {
     <SaleorAuthProvider {...useSaleorAuthClientProps}>
       <Provider value={urqlClient}>
         <main className="container">
-          <h1>Saleor + Next = 🫶</h1>
+          <header>
+            <h1>Saleor + Next = 🫶</h1>
+            <span className="info">
+              Saleor instance URL:{" "}
+              <a
+                target={"_blank"}
+                href={process.env.NEXT_PUBLIC_SALEOR_INSTANCE_URI}
+                rel="noreferrer"
+              >
+                {process.env.NEXT_PUBLIC_SALEOR_INSTANCE_URI}
+              </a>
+            </span>
+          </header>
           <LoginForm />
           <Component {...pageProps} />
         </main>
