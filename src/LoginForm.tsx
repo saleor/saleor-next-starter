@@ -1,44 +1,109 @@
+import React, { FormEvent } from "react";
 import { useCurrentUserQuery } from "../generated/graphql";
 import { useSaleorAuthContext } from "./auth";
 
+const User = ({
+  firstName,
+  lastName,
+  email,
+}: {
+  firstName: string;
+  lastName: string;
+  email: string;
+}) => {
+  const name =
+    firstName.length > 0 && lastName.length > 0
+      ? `${firstName} ${lastName}`
+      : email;
+  return (
+    <div>
+      <span>Hello {name} 👋</span>
+    </div>
+  );
+};
+
+type FormValues = {
+  password: string;
+  email: string;
+};
+
+const defaultValues: FormValues = {
+  password: "",
+  email: "",
+};
+
 export const LoginForm = () => {
+  const [formValues, setFormValues] = React.useState<FormValues>(defaultValues);
+  const [errors, setErrors] = React.useState<string[]>([]);
+
   const { signIn, signOut, isAuthenticating } = useSaleorAuthContext();
   const [currentUser] = useCurrentUserQuery({ pause: isAuthenticating });
 
   const isLoading = isAuthenticating || currentUser.fetching;
 
-  const logInLogOut = () => {
-    if (currentUser.data?.me) {
-      signOut();
-    } else {
-      signIn({ email: `admin@example.com`, password: `admin` });
+  const submitHandler = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const result = await signIn(formValues);
+
+    if (result.data.tokenCreate.errors) {
+      setErrors(result.data.tokenCreate.errors.map((e) => e.message));
+      setFormValues(defaultValues);
     }
   };
 
-  const buttonLabel = isLoading
-    ? "Loading…"
-    : currentUser.data?.me
-    ? "Log Out"
-    : "Log In";
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormValues((prev) => ({ ...prev, [name]: value }));
 
-  const userText = isLoading ? (
-    "…"
-  ) : currentUser.data?.me ? (
-    <>
-      {currentUser.data?.me?.firstName} {currentUser.data?.me?.lastName}{" "}
-      {currentUser.data?.me?.email} ({currentUser.data?.me?.orders?.totalCount}{" "}
-      orders)
-    </>
-  ) : (
-    <>Not authenticated</>
-  );
+    if (errors.length > 0) {
+      setErrors([]);
+    }
+  };
 
   return (
-    <div>
-      <button className="button" onClick={logInLogOut}>
-        {buttonLabel}
-      </button>
-      <p>{userText}</p>
-    </div>
+    <section>
+      {currentUser.data?.me && !isLoading ? (
+        <>
+          <User
+            firstName={currentUser.data.me.firstName}
+            lastName={currentUser.data.me.lastName}
+            email={currentUser.data.me.email}
+          />
+          <button className="button" onClick={() => signOut()}>
+            Log Out
+          </button>
+        </>
+      ) : (
+        <div>
+          <form onSubmit={submitHandler}>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formValues.email}
+              onChange={changeHandler}
+            />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={formValues.password}
+              onChange={changeHandler}
+            />
+            <button className="button" type="submit">
+              Log In
+            </button>
+          </form>
+          <div>
+            {errors.map((error) => (
+              <p className="error" key={error}>
+                {error}
+              </p>
+            ))}
+          </div>
+        </div>
+      )}
+    </section>
   );
 };
