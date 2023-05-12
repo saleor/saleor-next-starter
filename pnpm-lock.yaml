@@ -2,8 +2,8 @@ lockfileVersion: '6.0'
 
 dependencies:
   '@saleor/auth-sdk':
-    specifier: ^0.1.0
-    version: 0.1.0
+    specifier: ^0.1.1
+    version: 0.1.1
   graphql:
     specifier: ^16.6.0
     version: 16.6.0
@@ -1563,8 +1563,8 @@ packages:
     resolution: {integrity: sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==}
     dev: true
 
-  /@saleor/auth-sdk@0.1.0:
-    resolution: {integrity: sha512-/dnznBslwbtx8pz5xlVV8XCwi6/WtyQ5lw0VAdurflXBRUEywbz4lL4an1n0qJ1Jce4mYC3FeYdPfYzreZB8og==}
+  /@saleor/auth-sdk@0.1.1:
+    resolution: {integrity: sha512-zc1wQihAxIkXLXAANAPAonUIWTaVWRW6KmjmIHxnQxURTwmTQWFB0rF2mPmiYVeHbOlSh+4Uz1RapIYwcjGOLw==}
     dependencies:
       graphql: 16.6.0
       graphql-tag: 2.12.6(graphql@16.6.0)
