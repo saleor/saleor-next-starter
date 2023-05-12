@@ -1,11 +1,17 @@
-/** @type {import('next').NextConfig} */
 
 const instanceURL = new URL(process.env.NEXT_PUBLIC_SALEOR_INSTANCE_URI);
 
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: [instanceURL.hostname, "prod.demo.saleor.cloud"],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.saleor.cloud',
+      },
+    ],
+    domains: [instanceURL.hostname],
   },
 };
 
