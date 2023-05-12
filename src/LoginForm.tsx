@@ -1,6 +1,6 @@
 import React, { FormEvent } from "react";
 import { useCurrentUserQuery } from "../generated/graphql";
-import { useSaleorAuthContext } from "./auth";
+import { useSaleorAuthContext } from "@saleor/auth-sdk/react";
 
 const User = ({
   firstName,
