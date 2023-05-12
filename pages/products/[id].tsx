@@ -2,7 +2,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { initUrqlClient, withUrqlClient } from "next-urql";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { cacheExchange, dedupExchange, fetchExchange, ssrExchange } from "urql";
+import { cacheExchange, createClient, dedupExchange, fetchExchange, ssrExchange } from "urql";
 import { API_URL, DEFAULT_CHANNEl } from "../../constants";
 import {
   FetchProductDocument,
@@ -13,7 +13,14 @@ import {
   FetchProductsQueryVariables,
   useFetchProductQuery,
 } from "../../generated/graphql";
-import { apiClient } from "../../src/api/client";
+
+
+const ssrCache = ssrExchange({ isClient: false });
+
+export const apiClient = createClient({
+  url: API_URL,
+  exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange],
+});
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const { data } = await apiClient
@@ -38,7 +45,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
   // Read more in urql documentation: https://formidable.com/open-source/urql/docs/advanced/server-side-rendering/#ssr-with-getstaticprops-or-getserversideprops
   const id = context.params?.id;
 
-  const ssrCache = ssrExchange({ isClient: false });
   const client = initUrqlClient(
     {
       url: API_URL,
@@ -87,4 +93,5 @@ const ProductPage = () => {
 
 export default withUrqlClient((ssr) => ({
   url: API_URL,
+  exchanges: [cacheExchange, fetchExchange],
 }))(ProductPage);

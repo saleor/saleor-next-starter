@@ -2,13 +2,16 @@ import type { AppProps } from "next/app";
 import { Provider } from "urql";
 import { API_URL } from "../constants";
 import "../public/styles/global.css";
-import { useCreateAuthedUrqlClient } from "../src/api/client";
+import { cacheExchange, dedupExchange, fetchExchange, ssrExchange } from "urql";
+import { useUrqlClient } from "@saleor/auth-sdk/react/urql";
 import {
   SaleorAuthProvider,
   useAuthChange,
   useSaleorAuthClient,
-} from "../src/auth";
+} from "@saleor/auth-sdk/react";
 import { LoginForm } from "../src/LoginForm";
+
+const ssrCache = ssrExchange({ isClient: false });
 
 export default function App({ Component, pageProps }: AppProps) {
   const useSaleorAuthClientProps = useSaleorAuthClient({
@@ -16,9 +19,10 @@ export default function App({ Component, pageProps }: AppProps) {
     storage: typeof window !== "undefined" ? window.localStorage : undefined,
   });
 
-  const { urqlClient, resetClient } = useCreateAuthedUrqlClient({
+  const { urqlClient, resetClient } = useUrqlClient({
     url: API_URL,
     fetch: useSaleorAuthClientProps.saleorAuthClient.fetchWithAuth,
+    exchanges: [dedupExchange, cacheExchange, fetchExchange],
   });
 
   useAuthChange({
