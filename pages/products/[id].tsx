@@ -2,7 +2,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { initUrqlClient, withUrqlClient } from "next-urql";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { cacheExchange, createClient, dedupExchange, fetchExchange, ssrExchange } from "urql";
+import { cacheExchange, createClient, dedupExchange, fetchExchange, ssrExchange, useQuery } from "urql";
 import { API_URL, DEFAULT_CHANNEl } from "../../constants";
 import {
   FetchProductDocument,
@@ -11,7 +11,6 @@ import {
   FetchProductsDocument,
   FetchProductsQuery,
   FetchProductsQueryVariables,
-  useFetchProductQuery,
 } from "../../generated/graphql";
 
 
@@ -71,9 +70,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
 const ProductPage = () => {
   const { query } = useRouter();
   const id = (Array.isArray(query.id) ? query.id[0] : query.id) ?? "";
-  const [{ data }] = useFetchProductQuery({
+
+  const [{ data }] = useQuery({
+    query: FetchProductDocument,
     variables: { id, channel: DEFAULT_CHANNEl },
-  });
+  })
 
   const firstImage = data?.product?.media?.[0];
   return (

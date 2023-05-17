@@ -1,6 +1,7 @@
 import React, { FormEvent } from "react";
-import { useCurrentUserQuery } from "../generated/graphql";
 import { useSaleorAuthContext } from "@saleor/auth-sdk/react";
+import { useQuery } from "urql";
+import { CurrentUserDocument } from "../generated/graphql";
 
 const User = ({
   firstName,
@@ -37,9 +38,12 @@ export const LoginForm = () => {
   const [errors, setErrors] = React.useState<string[]>([]);
 
   const { signIn, signOut, isAuthenticating } = useSaleorAuthContext();
-  const [currentUser] = useCurrentUserQuery({ pause: isAuthenticating });
+  const [{ data: currentUser, fetching: currentUserFetching }] = useQuery({
+    query: CurrentUserDocument,
+    pause: isAuthenticating,
+  })
 
-  const isLoading = isAuthenticating || currentUser.fetching;
+  const isLoading = isAuthenticating || currentUserFetching;
 
   const submitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -63,12 +67,12 @@ export const LoginForm = () => {
 
   return (
     <section>
-      {currentUser.data?.me && !isLoading ? (
+      {currentUser?.me && !isLoading ? (
         <>
           <User
-            firstName={currentUser.data.me.firstName}
-            lastName={currentUser.data.me.lastName}
-            email={currentUser.data.me.email}
+            firstName={currentUser?.me.firstName}
+            lastName={currentUser?.me.lastName}
+            email={currentUser?.me.email}
           />
           <button className="button" onClick={() => signOut()}>
             Log Out

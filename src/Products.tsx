@@ -1,12 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { DEFAULT_CHANNEl } from "../constants";
-import { useFetchProductsQuery } from "../generated/graphql";
+import { FetchProductsDocument } from "../generated/graphql";
+import { useQuery } from "urql";
 
 export const Products = () => {
-  const [{ data }] = useFetchProductsQuery({
+    const [{ data }] = useQuery({
+    query: FetchProductsDocument,
     variables: { channel: DEFAULT_CHANNEl, first: 9 },
-  });
+  })
 
   return (
     <section>
