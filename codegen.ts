@@ -6,19 +6,8 @@ const config: CodegenConfig = {
   schema: API_URL,
   documents: "graphql/**/*.graphql",
   generates: {
-    "generated/graphql.ts": {
-      plugins: [
-        "typescript",
-        "typescript-operations",
-        "urql-introspection",
-        "typescript-urql",
-        {
-          "typed-document-node": {
-            documentVariablePrefix: "Untyped",
-            fragmentVariablePrefix: "Untyped",
-          },
-        },
-      ],
+    "generated/": {
+      preset: 'client',
     },
   },
 };
