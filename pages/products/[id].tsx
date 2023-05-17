@@ -2,7 +2,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import { initUrqlClient, withUrqlClient } from "next-urql";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { cacheExchange, createClient, dedupExchange, fetchExchange, ssrExchange, useQuery } from "urql";
+import { cacheExchange, createClient, fetchExchange, ssrExchange, useQuery } from "urql";
 import { API_URL, DEFAULT_CHANNEl } from "../../constants";
 import {
   FetchProductDocument,
@@ -18,7 +18,7 @@ const ssrCache = ssrExchange({ isClient: false });
 
 export const apiClient = createClient({
   url: API_URL,
-  exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange],
+  exchanges: [cacheExchange, ssrCache, fetchExchange],
 });
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -47,7 +47,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const client = initUrqlClient(
     {
       url: API_URL,
-      exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange],
+      exchanges: [cacheExchange, ssrCache, fetchExchange],
     },
     false
   );

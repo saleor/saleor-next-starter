@@ -1,6 +1,6 @@
 import { GetStaticProps } from "next";
 import { initUrqlClient, withUrqlClient } from "next-urql";
-import { cacheExchange, dedupExchange, fetchExchange, ssrExchange } from "urql";
+import { cacheExchange, fetchExchange, ssrExchange } from "urql";
 import { API_URL, DEFAULT_CHANNEl } from "../constants";
 import {
   FetchProductsDocument,
@@ -18,7 +18,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const client = initUrqlClient(
     {
       url: API_URL,
-      exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange],
+      exchanges: [cacheExchange, ssrCache, fetchExchange],
     },
     false
   );

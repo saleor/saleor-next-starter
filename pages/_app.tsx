@@ -2,7 +2,7 @@ import type { AppProps } from "next/app";
 import { Provider } from "urql";
 import { API_URL } from "../constants";
 import "../public/styles/global.css";
-import { cacheExchange, dedupExchange, fetchExchange, ssrExchange } from "urql";
+import { cacheExchange, fetchExchange, ssrExchange } from "urql";
 import { useUrqlClient } from "@saleor/auth-sdk/react/urql";
 import {
   SaleorAuthProvider,
@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const { urqlClient, resetClient } = useUrqlClient({
     url: API_URL,
     fetch: useSaleorAuthClientProps.saleorAuthClient.fetchWithAuth,
-    exchanges: [dedupExchange, cacheExchange, fetchExchange],
+    exchanges: [cacheExchange, fetchExchange],
   });
 
   useAuthChange({
