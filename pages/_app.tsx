@@ -19,15 +19,15 @@ export default function App({ Component, pageProps }: AppProps) {
     storage: typeof window !== "undefined" ? window.localStorage : undefined,
   });
 
-  const { urqlClient, resetClient } = useUrqlClient({
+  const { urqlClient, reset, refetch } = useUrqlClient({
     url: API_URL,
     fetch: useSaleorAuthClientProps.saleorAuthClient.fetchWithAuth,
     exchanges: [cacheExchange, fetchExchange],
   });
 
   useAuthChange({
-    onSignedOut: () => resetClient(),
-    onSignedIn: () => resetClient(),
+    onSignedOut: () => reset(),
+    onSignedIn: () => refetch(),
   });
 
   return (
