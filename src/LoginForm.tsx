@@ -41,7 +41,7 @@ export const LoginForm = () => {
   const [{ data: currentUser, fetching: currentUserFetching }] = useQuery({
     query: CurrentUserDocument,
     pause: isAuthenticating,
-  })
+  });
 
   const isLoading = isAuthenticating || currentUserFetching;
 
@@ -67,14 +67,14 @@ export const LoginForm = () => {
 
   return (
     <section>
-      {currentUser?.me && !isLoading ? (
+      {currentUser?.me ? (
         <>
           <User
             firstName={currentUser?.me.firstName}
             lastName={currentUser?.me.lastName}
             email={currentUser?.me.email}
           />
-          <button className="button" onClick={() => signOut()}>
+          <button className="button" onClick={() => signOut()} disabled={isLoading}>
             Log Out
           </button>
         </>
@@ -87,6 +87,7 @@ export const LoginForm = () => {
               placeholder="Email"
               value={formValues.email}
               onChange={changeHandler}
+              disabled={isLoading}
             />
             <input
               type="password"
@@ -94,8 +95,9 @@ export const LoginForm = () => {
               placeholder="Password"
               value={formValues.password}
               onChange={changeHandler}
+              disabled={isLoading}
             />
-            <button className="button" type="submit">
+            <button className="button" type="submit" disabled={isLoading}>
               Log In
             </button>
           </form>
