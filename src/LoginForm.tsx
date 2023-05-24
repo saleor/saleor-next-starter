@@ -65,9 +65,11 @@ export const LoginForm = () => {
     }
   };
 
+  if (isLoading) return (<div>Loading...</div>);
+
   return (
     <section>
-      {currentUser?.me && !isLoading ? (
+      {currentUser?.me ? (
         <>
           <User
             firstName={currentUser?.me.firstName}

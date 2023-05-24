@@ -26,6 +26,7 @@ export default function App({ Component, pageProps }: AppProps) {
   });
 
   useAuthChange({
+    saleorApiUrl: API_URL,
     onSignedOut: () => reset(),
     onSignedIn: () => refetch(),
   });
