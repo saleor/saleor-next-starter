@@ -12,7 +12,7 @@
   "dependencies": {
     "@graphql-typed-document-node/core": "^3.2.0",
     "@saleor/auth-sdk": "^0.8.0",
-    "graphql": "^16.6.0",
+    "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
     "next": "^13.4.3",
     "next-urql": "^5.0.1",
